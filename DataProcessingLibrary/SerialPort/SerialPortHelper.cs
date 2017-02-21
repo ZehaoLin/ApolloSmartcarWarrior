@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace DataProcessingLibrary
 {
-    public class Serialer
+    public class SerialPortHelper
     {
         System.IO.Ports.SerialPort mSerialPort;
 
         /// <summary>
         /// 无参数构造函数
         /// </summary>
-        public Serialer()
+        public SerialPortHelper()
         {
             this.mSerialPort = new System.IO.Ports.SerialPort();
         }
@@ -23,7 +23,7 @@ namespace DataProcessingLibrary
         /// 接收一个串口类对象构造方法
         /// </summary>
         /// <param name="serialport"></param>
-        public Serialer(System.IO.Ports.SerialPort serialport)
+        public SerialPortHelper(System.IO.Ports.SerialPort serialport)
         {
             this.mSerialPort = serialport;
         }

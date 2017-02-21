@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.mainMenuBar = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,7 +41,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.frameHeadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.usrSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iARToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.MDKToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.IARToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,8 +101,8 @@
             this.tabPageNetWorker = new System.Windows.Forms.TabPage();
             this.groupBoxCOMCtrl = new System.Windows.Forms.GroupBox();
             this.lblCOMStatus = new System.Windows.Forms.Label();
-            this.btnCOMSearch = new System.Windows.Forms.Button();
-            this.btnSrialportCtrl = new System.Windows.Forms.Button();
+            this.btnSerialportSearch = new System.Windows.Forms.Button();
+            this.btnSerialportCtrl = new System.Windows.Forms.Button();
             this.cmbCOMPort = new System.Windows.Forms.ComboBox();
             this.lblCOMPort = new System.Windows.Forms.Label();
             this.groupBoxFileCtrl = new System.Windows.Forms.GroupBox();
@@ -195,7 +195,7 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.frameHeadToolStripMenuItem,
+            this.usrSettingToolStripMenuItem,
             this.iARToolStripMenuItem,
             this.MDKToolStripMenuItem,
             this.IARToolStripMenuItem1,
@@ -205,12 +205,12 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(52, 21);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
-            // frameHeadToolStripMenuItem
+            // usrSettingToolStripMenuItem
             // 
-            this.frameHeadToolStripMenuItem.Name = "frameHeadToolStripMenuItem";
-            this.frameHeadToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.frameHeadToolStripMenuItem.Text = "Setting";
-            this.frameHeadToolStripMenuItem.Click += new System.EventHandler(this.userSettingToolStripMenuItem_Click);
+            this.usrSettingToolStripMenuItem.Name = "usrSettingToolStripMenuItem";
+            this.usrSettingToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.usrSettingToolStripMenuItem.Text = "Setting";
+            this.usrSettingToolStripMenuItem.Click += new System.EventHandler(this.userSettingToolStripMenuItem_Click);
             // 
             // iARToolStripMenuItem
             // 
@@ -528,6 +528,7 @@
             this.txbSerialReceiveData.Multiline = true;
             this.txbSerialReceiveData.Name = "txbSerialReceiveData";
             this.txbSerialReceiveData.ReadOnly = true;
+            this.txbSerialReceiveData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txbSerialReceiveData.Size = new System.Drawing.Size(655, 238);
             this.txbSerialReceiveData.TabIndex = 0;
             // 
@@ -684,16 +685,16 @@
             // 
             // chartImageGray
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartImageGray.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartImageGray.Legends.Add(legend2);
+            chartArea6.Name = "ChartArea1";
+            this.chartImageGray.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chartImageGray.Legends.Add(legend6);
             this.chartImageGray.Location = new System.Drawing.Point(5, 15);
             this.chartImageGray.Name = "chartImageGray";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Gray";
-            this.chartImageGray.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Gray";
+            this.chartImageGray.Series.Add(series6);
             this.chartImageGray.Size = new System.Drawing.Size(357, 201);
             this.chartImageGray.TabIndex = 1;
             this.chartImageGray.Text = "chart1";
@@ -766,8 +767,8 @@
             // groupBoxCOMCtrl
             // 
             this.groupBoxCOMCtrl.Controls.Add(this.lblCOMStatus);
-            this.groupBoxCOMCtrl.Controls.Add(this.btnCOMSearch);
-            this.groupBoxCOMCtrl.Controls.Add(this.btnSrialportCtrl);
+            this.groupBoxCOMCtrl.Controls.Add(this.btnSerialportSearch);
+            this.groupBoxCOMCtrl.Controls.Add(this.btnSerialportCtrl);
             this.groupBoxCOMCtrl.Controls.Add(this.cmbCOMPort);
             this.groupBoxCOMCtrl.Controls.Add(this.lblCOMPort);
             this.groupBoxCOMCtrl.Location = new System.Drawing.Point(698, 28);
@@ -786,25 +787,25 @@
             this.lblCOMStatus.TabIndex = 4;
             this.lblCOMStatus.Text = "COM Port is close.";
             // 
-            // btnCOMSearch
+            // btnSerialportSearch
             // 
-            this.btnCOMSearch.Location = new System.Drawing.Point(30, 82);
-            this.btnCOMSearch.Name = "btnCOMSearch";
-            this.btnCOMSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnCOMSearch.TabIndex = 3;
-            this.btnCOMSearch.Text = "Search";
-            this.btnCOMSearch.UseVisualStyleBackColor = true;
-            this.btnCOMSearch.Click += new System.EventHandler(this.btnCOMSearch_Click);
+            this.btnSerialportSearch.Location = new System.Drawing.Point(30, 82);
+            this.btnSerialportSearch.Name = "btnSerialportSearch";
+            this.btnSerialportSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialportSearch.TabIndex = 3;
+            this.btnSerialportSearch.Text = "Search";
+            this.btnSerialportSearch.UseVisualStyleBackColor = true;
+            this.btnSerialportSearch.Click += new System.EventHandler(this.btnSerialportSearch_Click);
             // 
-            // btnSrialportCtrl
+            // btnSerialportCtrl
             // 
-            this.btnSrialportCtrl.Location = new System.Drawing.Point(30, 54);
-            this.btnSrialportCtrl.Name = "btnSrialportCtrl";
-            this.btnSrialportCtrl.Size = new System.Drawing.Size(75, 23);
-            this.btnSrialportCtrl.TabIndex = 2;
-            this.btnSrialportCtrl.Text = "Open";
-            this.btnSrialportCtrl.UseVisualStyleBackColor = true;
-            this.btnSrialportCtrl.Click += new System.EventHandler(this.btnSrialportCtrl_Click);
+            this.btnSerialportCtrl.Location = new System.Drawing.Point(30, 54);
+            this.btnSerialportCtrl.Name = "btnSerialportCtrl";
+            this.btnSerialportCtrl.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialportCtrl.TabIndex = 2;
+            this.btnSerialportCtrl.Text = "Open";
+            this.btnSerialportCtrl.UseVisualStyleBackColor = true;
+            this.btnSerialportCtrl.Click += new System.EventHandler(this.btnSerialportCtrl_Click);
             // 
             // cmbCOMPort
             // 
@@ -920,11 +921,13 @@
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.mainMenuBar);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.mainMenuBar;
             this.Name = "frmMian";
-            this.Text = "Apollo Smartcar Warrior";
+            this.Text = "Apollo Smartcar Warrior Beta 0.1.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMian_FormClosed);
             this.Load += new System.EventHandler(this.frmMian_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMian_KeyDown);
             this.mainMenuBar.ResumeLayout(false);
             this.mainMenuBar.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -978,7 +981,7 @@
         private System.Windows.Forms.TabPage tabPageScope;
         private System.Windows.Forms.TabPage tabPageNetWorker;
         private System.Windows.Forms.GroupBox groupBoxCOMCtrl;
-        private System.Windows.Forms.Button btnSrialportCtrl;
+        private System.Windows.Forms.Button btnSerialportCtrl;
         private System.Windows.Forms.ComboBox cmbCOMPort;
         private System.Windows.Forms.Label lblCOMPort;
         private System.Windows.Forms.GroupBox groupBoxSeriaSendData;
@@ -990,7 +993,7 @@
         private System.Windows.Forms.PictureBox pictureBoxBinaryImage;
         private System.Windows.Forms.GroupBox groupBoxOriginalImage;
         private System.Windows.Forms.PictureBox pictureBoxOriginalImage;
-        private System.Windows.Forms.Button btnCOMSearch;
+        private System.Windows.Forms.Button btnSerialportSearch;
         private System.Windows.Forms.GroupBox groupBoxSerialRxAndTxCtrl;
         private System.Windows.Forms.RadioButton rbtnSerialHex;
         private System.Windows.Forms.RadioButton rbtnSerialChar;
@@ -1003,7 +1006,7 @@
         private System.Windows.Forms.Button btnFileSave;
         private System.Windows.Forms.Button btnFileOpen;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem frameHeadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem usrSettingToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator iARToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MDKToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem IARToolStripMenuItem1;

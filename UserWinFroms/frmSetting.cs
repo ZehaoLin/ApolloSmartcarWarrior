@@ -16,7 +16,7 @@ namespace UserWinFroms
     public partial class frmSetting : Form
     {
         // 初始化要序列化的对象
-        private static SettingJsonSerializer setting = new SettingJsonSerializer();
+        public SettingJsonSerializer setting = new SettingJsonSerializer();
 
         public frmSetting()
         {
@@ -59,21 +59,23 @@ namespace UserWinFroms
         /// </summary>
         private void LoadDefaultSetting()
         {
-            StreamReader sr = new StreamReader(@"Setting\setting.json", Encoding.UTF8);
-            string json = sr.ReadToEnd();//读取json文件为字符串
-            Deserialization(json);//反序列化
+            using (StreamReader sr = new StreamReader(@"Setting\setting.json", Encoding.UTF8))
+            {
+                string json = sr.ReadToEnd();//读取json文件为字符串
+                Deserialization(json);//反序列化
 
-            // 载入配置文件信息
-            cmbSerialBaudRate.Text = setting.BaudRate;
-            cmbSerialDataBit.Text = setting.DataBit;
-            cmbSerialParity.Text = setting.Parity;
-            cmbSerialStopBit.Text = setting.StopBit;
+                // 载入配置文件信息
+                cmbSerialBaudRate.Text = setting.BaudRate;
+                cmbSerialDataBit.Text = setting.DataBit;
+                cmbSerialParity.Text = setting.Parity;
+                cmbSerialStopBit.Text = setting.StopBit;
 
-            txbSerialParityData.Text = setting.ParityData;
-            txbImageRow.Text = setting.ImageRow;
-            txbImageCol.Text = setting.ImageCol;
-            txbImageHeader1.Text = setting.ImageHeader1;
-            txbImageHeader2.Text = setting.ImageHeader2;
+                txbSerialParityData.Text = setting.ParityData;
+                txbImageRow.Text = setting.ImageRow;
+                txbImageCol.Text = setting.ImageCol;
+                txbImageHeader1.Text = setting.ImageHeader1;
+                txbImageHeader2.Text = setting.ImageHeader2;
+            }
         }
 
         /// <summary>
@@ -104,6 +106,18 @@ namespace UserWinFroms
             fs.Close();
         }
 
+        public void SavaSettingToJson()
+        {
+            string json = Serialization();
+            // 将json保存为json文件
+            FileStream fs = new FileStream(@"setting\setting.json", FileMode.Open, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.WriteLine(json);
+            sw.Flush();
+            sw.Close();
+            fs.Close();
+        }
+
         /// <summary>
         /// 序列化操作
         /// </summary>
@@ -120,6 +134,7 @@ namespace UserWinFroms
             StreamReader sr = new StreamReader(ms, Encoding.UTF8);
             string json = sr.ReadToEnd();
 
+            // 手动关闭
             sr.Close();
             ms.Close();
 
@@ -139,6 +154,16 @@ namespace UserWinFroms
                 DataContractJsonSerializer deserializer = new DataContractJsonSerializer(typeof(SettingJsonSerializer));
                 setting = (SettingJsonSerializer)deserializer.ReadObject(ms);// 反序列化读取Object
             }
+        }
+
+        /// <summary>
+        /// 关闭设置窗口时将配置信息写入json文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmSetting_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SavaSettingToJson();
         }
 
         #region "Serial Port Setting Init"
@@ -243,13 +268,57 @@ namespace UserWinFroms
         #endregion
 
         #region "Property Change"
+        private void cmbSerialBaudRate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setting.BaudRate = cmbSerialBaudRate.Text;
+        }
+
+        private void cmbSerialDataBit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setting.DataBit = cmbSerialDataBit.Text;
+        }
+
+        private void cmbSerialParity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setting.Parity = cmbSerialParity.Text;
+        }
+
+        private void cmbSerialStopBit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setting.StopBit = cmbSerialStopBit.Text;
+        }
+
+        private void txbSerialParityData_TextChanged(object sender, EventArgs e)
+        {
+            setting.ParityData = txbSerialParityData.Text;
+        }
+
+        private void txbImageRow_TextChanged(object sender, EventArgs e)
+        {
+            setting.ImageRow = txbImageRow.Text;
+        }
+
+        private void txbImageCol_TextChanged(object sender, EventArgs e)
+        {
+            setting.ImageCol = txbImageCol.Text;
+        }
+
+        private void txbImageHeader1_TextChanged(object sender, EventArgs e)
+        {
+            setting.ImageHeader1 = txbImageHeader1.Text;
+        }
+
+        private void txbImageHeader2_TextChanged(object sender, EventArgs e)
+        {
+            setting.ImageHeader2 = txbImageHeader2.Text;
+        }
         #endregion
 
         /// <summary>
         /// Json序列化类
         /// </summary>
         [DataContract]
-        private class SettingJsonSerializer
+        public class SettingJsonSerializer
         {
             [DataMember]
             public string BaudRate { get; set; }

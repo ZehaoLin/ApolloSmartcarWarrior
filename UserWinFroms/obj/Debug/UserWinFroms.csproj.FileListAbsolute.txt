@@ -10,11 +10,6 @@ E:\Work\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\ob
 E:\Work\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.COMSetting.resources
 E:\Work\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.StartFrm.resources
 E:\Work\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.ImageSetting.resources
-E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\UserWinFroms.exe.config
-E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.exe
-E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.pdb
-E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\UserWinFroms.exe
-E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\UserWinFroms.pdb
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.csprojResolveAssemblyReference.cache
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.frmMian.resources
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.Properties.Resources.resources
@@ -23,3 +18,8 @@ E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\o
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\DataProcessingLibrary.dll
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\DataProcessingLibrary.pdb
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\UserWinFroms.frmSetting.resources
+E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\Apollo Smartcar Warrior.exe.config
+E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\Apollo Smartcar Warrior.exe
+E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\bin\Debug\Apollo Smartcar Warrior.pdb
+E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\Apollo Smartcar Warrior.exe
+E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\UserWinFroms\obj\Debug\Apollo Smartcar Warrior.pdb

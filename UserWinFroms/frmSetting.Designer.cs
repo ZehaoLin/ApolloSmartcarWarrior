@@ -39,8 +39,6 @@
             this.lblSerialDataBit = new System.Windows.Forms.Label();
             this.cmbSerialBaudRate = new System.Windows.Forms.ComboBox();
             this.lblBaudRate = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tlblSettingStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxImageProperty = new System.Windows.Forms.GroupBox();
             this.txbImageHeader2 = new System.Windows.Forms.TextBox();
             this.lblImageHeader2 = new System.Windows.Forms.Label();
@@ -51,7 +49,6 @@
             this.txbImageRow = new System.Windows.Forms.TextBox();
             this.lblImageRow = new System.Windows.Forms.Label();
             this.groupBoxSerialProperty.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.groupBoxImageProperty.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,6 +77,7 @@
             this.txbSerialParityData.Name = "txbSerialParityData";
             this.txbSerialParityData.Size = new System.Drawing.Size(121, 21);
             this.txbSerialParityData.TabIndex = 9;
+            this.txbSerialParityData.TextChanged += new System.EventHandler(this.txbSerialParityData_TextChanged);
             // 
             // lblSerialParityData
             // 
@@ -107,6 +105,7 @@
             this.cmbSerialStopBit.Name = "cmbSerialStopBit";
             this.cmbSerialStopBit.Size = new System.Drawing.Size(121, 20);
             this.cmbSerialStopBit.TabIndex = 6;
+            this.cmbSerialStopBit.SelectedIndexChanged += new System.EventHandler(this.cmbSerialStopBit_SelectedIndexChanged);
             // 
             // cmbSerialParity
             // 
@@ -116,6 +115,7 @@
             this.cmbSerialParity.Name = "cmbSerialParity";
             this.cmbSerialParity.Size = new System.Drawing.Size(121, 20);
             this.cmbSerialParity.TabIndex = 5;
+            this.cmbSerialParity.SelectedIndexChanged += new System.EventHandler(this.cmbSerialParity_SelectedIndexChanged);
             // 
             // lblSerialParity
             // 
@@ -134,6 +134,7 @@
             this.cmbSerialDataBit.Name = "cmbSerialDataBit";
             this.cmbSerialDataBit.Size = new System.Drawing.Size(121, 20);
             this.cmbSerialDataBit.TabIndex = 3;
+            this.cmbSerialDataBit.SelectedIndexChanged += new System.EventHandler(this.cmbSerialDataBit_SelectedIndexChanged);
             // 
             // lblSerialDataBit
             // 
@@ -153,6 +154,7 @@
             this.cmbSerialBaudRate.Name = "cmbSerialBaudRate";
             this.cmbSerialBaudRate.Size = new System.Drawing.Size(121, 20);
             this.cmbSerialBaudRate.TabIndex = 1;
+            this.cmbSerialBaudRate.SelectedIndexChanged += new System.EventHandler(this.cmbSerialBaudRate_SelectedIndexChanged);
             // 
             // lblBaudRate
             // 
@@ -162,22 +164,6 @@
             this.lblBaudRate.Size = new System.Drawing.Size(59, 12);
             this.lblBaudRate.TabIndex = 0;
             this.lblBaudRate.Text = "Baud Rate";
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tlblSettingStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 365);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(254, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // tlblSettingStatus
-            // 
-            this.tlblSettingStatus.Name = "tlblSettingStatus";
-            this.tlblSettingStatus.Size = new System.Drawing.Size(59, 17);
-            this.tlblSettingStatus.Text = "Writing...";
             // 
             // groupBoxImageProperty
             // 
@@ -202,6 +188,7 @@
             this.txbImageHeader2.Name = "txbImageHeader2";
             this.txbImageHeader2.Size = new System.Drawing.Size(121, 21);
             this.txbImageHeader2.TabIndex = 7;
+            this.txbImageHeader2.TextChanged += new System.EventHandler(this.txbImageHeader2_TextChanged);
             // 
             // lblImageHeader2
             // 
@@ -218,6 +205,7 @@
             this.txbImageHeader1.Name = "txbImageHeader1";
             this.txbImageHeader1.Size = new System.Drawing.Size(121, 21);
             this.txbImageHeader1.TabIndex = 5;
+            this.txbImageHeader1.TextChanged += new System.EventHandler(this.txbImageHeader1_TextChanged);
             // 
             // lblImageHeader1
             // 
@@ -234,6 +222,7 @@
             this.txbImageCol.Name = "txbImageCol";
             this.txbImageCol.Size = new System.Drawing.Size(121, 21);
             this.txbImageCol.TabIndex = 3;
+            this.txbImageCol.TextChanged += new System.EventHandler(this.txbImageCol_TextChanged);
             // 
             // lblImageCol
             // 
@@ -250,6 +239,7 @@
             this.txbImageRow.Name = "txbImageRow";
             this.txbImageRow.Size = new System.Drawing.Size(121, 21);
             this.txbImageRow.TabIndex = 1;
+            this.txbImageRow.TextChanged += new System.EventHandler(this.txbImageRow_TextChanged);
             // 
             // lblImageRow
             // 
@@ -264,30 +254,25 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(254, 387);
+            this.ClientSize = new System.Drawing.Size(254, 370);
             this.Controls.Add(this.groupBoxImageProperty);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBoxSerialProperty);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.Name = "frmSetting";
             this.Text = "User Setting";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSetting_FormClosed);
             this.groupBoxSerialProperty.ResumeLayout(false);
             this.groupBoxSerialProperty.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.groupBoxImageProperty.ResumeLayout(false);
             this.groupBoxImageProperty.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.GroupBox groupBoxSerialProperty;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel tlblSettingStatus;
         private System.Windows.Forms.GroupBox groupBoxImageProperty;
         private System.Windows.Forms.Label lblBaudRate;
         private System.Windows.Forms.ComboBox cmbSerialBaudRate;

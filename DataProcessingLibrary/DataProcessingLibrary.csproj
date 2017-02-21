@@ -46,7 +46,7 @@
     <Compile Include="Image\Imager.cs" />
     <Compile Include="Network\NetWorker.cs" />
     <Compile Include="Scope\Scoper.cs" />
-    <Compile Include="SerialPort\Serialer.cs" />
+    <Compile Include="SerialPort\SerialPortHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialPort\SerialPortInfo.cs" />
   </ItemGroup>
