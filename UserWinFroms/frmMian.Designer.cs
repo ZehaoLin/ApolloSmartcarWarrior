@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.mainMenuBar = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,10 +80,11 @@
             this.txbSerialReceiveData = new System.Windows.Forms.TextBox();
             this.tabPageImage = new System.Windows.Forms.TabPage();
             this.groupBoxImageCtrl = new System.Windows.Forms.GroupBox();
+            this.btnBinaryGray = new System.Windows.Forms.Button();
             this.numericUpDownImageThreshold = new System.Windows.Forms.NumericUpDown();
             this.lblImageColNumber = new System.Windows.Forms.Label();
             this.lblImageRowNumber = new System.Windows.Forms.Label();
-            this.btnFilp = new System.Windows.Forms.Button();
+            this.btnImageFilp = new System.Windows.Forms.Button();
             this.lblImageThreshold = new System.Windows.Forms.Label();
             this.lblImageCol = new System.Windows.Forms.Label();
             this.lblImageRow = new System.Windows.Forms.Label();
@@ -94,9 +95,9 @@
             this.groupBoxImageGray = new System.Windows.Forms.GroupBox();
             this.chartImageGray = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pictureBoxBinaryImage = new System.Windows.Forms.PictureBox();
+            this.binaryImagePictureBox = new System.Windows.Forms.PictureBox();
             this.groupBoxOriginalImage = new System.Windows.Forms.GroupBox();
-            this.pictureBoxOriginalImage = new System.Windows.Forms.PictureBox();
+            this.originalImagePictureBox = new System.Windows.Forms.PictureBox();
             this.tabPageScope = new System.Windows.Forms.TabPage();
             this.tabPageNetWorker = new System.Windows.Forms.TabPage();
             this.groupBoxCOMCtrl = new System.Windows.Forms.GroupBox();
@@ -113,6 +114,7 @@
             this.btnFileDelete = new System.Windows.Forms.Button();
             this.btnFileSave = new System.Windows.Forms.Button();
             this.btnFileOpen = new System.Windows.Forms.Button();
+            this.progressbarTimer = new System.Windows.Forms.Timer(this.components);
             this.mainMenuBar.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -126,9 +128,9 @@
             this.groupBoxImageGray.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartImageGray)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBinaryImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.binaryImagePictureBox)).BeginInit();
             this.groupBoxOriginalImage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOriginalImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.originalImagePictureBox)).BeginInit();
             this.groupBoxCOMCtrl.SuspendLayout();
             this.groupBoxFileCtrl.SuspendLayout();
             this.SuspendLayout();
@@ -295,6 +297,7 @@
             // 
             this.toolStripProgressBar.Name = "toolStripProgressBar";
             this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.toolStripProgressBar.Step = 1;
             // 
             // tlblSerialRxCnt
             // 
@@ -548,10 +551,11 @@
             // 
             // groupBoxImageCtrl
             // 
+            this.groupBoxImageCtrl.Controls.Add(this.btnBinaryGray);
             this.groupBoxImageCtrl.Controls.Add(this.numericUpDownImageThreshold);
             this.groupBoxImageCtrl.Controls.Add(this.lblImageColNumber);
             this.groupBoxImageCtrl.Controls.Add(this.lblImageRowNumber);
-            this.groupBoxImageCtrl.Controls.Add(this.btnFilp);
+            this.groupBoxImageCtrl.Controls.Add(this.btnImageFilp);
             this.groupBoxImageCtrl.Controls.Add(this.lblImageThreshold);
             this.groupBoxImageCtrl.Controls.Add(this.lblImageCol);
             this.groupBoxImageCtrl.Controls.Add(this.lblImageRow);
@@ -566,9 +570,19 @@
             this.groupBoxImageCtrl.TabStop = false;
             this.groupBoxImageCtrl.Text = "Image Control";
             // 
+            // btnBinaryGray
+            // 
+            this.btnBinaryGray.Location = new System.Drawing.Point(272, 133);
+            this.btnBinaryGray.Name = "btnBinaryGray";
+            this.btnBinaryGray.Size = new System.Drawing.Size(90, 23);
+            this.btnBinaryGray.TabIndex = 13;
+            this.btnBinaryGray.Text = "Binary";
+            this.btnBinaryGray.UseVisualStyleBackColor = true;
+            this.btnBinaryGray.Click += new System.EventHandler(this.btnBinaryGray_Click);
+            // 
             // numericUpDownImageThreshold
             // 
-            this.numericUpDownImageThreshold.Location = new System.Drawing.Point(326, 177);
+            this.numericUpDownImageThreshold.Location = new System.Drawing.Point(331, 195);
             this.numericUpDownImageThreshold.Name = "numericUpDownImageThreshold";
             this.numericUpDownImageThreshold.Size = new System.Drawing.Size(37, 21);
             this.numericUpDownImageThreshold.TabIndex = 12;
@@ -582,7 +596,7 @@
             // lblImageColNumber
             // 
             this.lblImageColNumber.AutoSize = true;
-            this.lblImageColNumber.Location = new System.Drawing.Point(308, 153);
+            this.lblImageColNumber.Location = new System.Drawing.Point(308, 179);
             this.lblImageColNumber.Name = "lblImageColNumber";
             this.lblImageColNumber.Size = new System.Drawing.Size(11, 12);
             this.lblImageColNumber.TabIndex = 11;
@@ -591,26 +605,26 @@
             // lblImageRowNumber
             // 
             this.lblImageRowNumber.AutoSize = true;
-            this.lblImageRowNumber.Location = new System.Drawing.Point(308, 133);
+            this.lblImageRowNumber.Location = new System.Drawing.Point(308, 159);
             this.lblImageRowNumber.Name = "lblImageRowNumber";
             this.lblImageRowNumber.Size = new System.Drawing.Size(11, 12);
             this.lblImageRowNumber.TabIndex = 10;
             this.lblImageRowNumber.Text = "0";
             // 
-            // btnFilp
+            // btnImageFilp
             // 
-            this.btnFilp.Location = new System.Drawing.Point(273, 104);
-            this.btnFilp.Name = "btnFilp";
-            this.btnFilp.Size = new System.Drawing.Size(90, 23);
-            this.btnFilp.TabIndex = 9;
-            this.btnFilp.Text = "Flip";
-            this.btnFilp.UseVisualStyleBackColor = true;
-            this.btnFilp.Click += new System.EventHandler(this.btnFilp_Click);
+            this.btnImageFilp.Location = new System.Drawing.Point(273, 104);
+            this.btnImageFilp.Name = "btnImageFilp";
+            this.btnImageFilp.Size = new System.Drawing.Size(90, 23);
+            this.btnImageFilp.TabIndex = 9;
+            this.btnImageFilp.Text = "Flip";
+            this.btnImageFilp.UseVisualStyleBackColor = true;
+            this.btnImageFilp.Click += new System.EventHandler(this.btnImageFilp_Click);
             // 
             // lblImageThreshold
             // 
             this.lblImageThreshold.AutoSize = true;
-            this.lblImageThreshold.Location = new System.Drawing.Point(273, 179);
+            this.lblImageThreshold.Location = new System.Drawing.Point(271, 197);
             this.lblImageThreshold.Name = "lblImageThreshold";
             this.lblImageThreshold.Size = new System.Drawing.Size(65, 12);
             this.lblImageThreshold.TabIndex = 7;
@@ -619,16 +633,16 @@
             // lblImageCol
             // 
             this.lblImageCol.AutoSize = true;
-            this.lblImageCol.Location = new System.Drawing.Point(273, 153);
+            this.lblImageCol.Location = new System.Drawing.Point(273, 179);
             this.lblImageCol.Name = "lblImageCol";
-            this.lblImageCol.Size = new System.Drawing.Size(41, 12);
+            this.lblImageCol.Size = new System.Drawing.Size(29, 12);
             this.lblImageCol.TabIndex = 5;
-            this.lblImageCol.Text = "Col  :";
+            this.lblImageCol.Text = "Col:";
             // 
             // lblImageRow
             // 
             this.lblImageRow.AutoSize = true;
-            this.lblImageRow.Location = new System.Drawing.Point(273, 133);
+            this.lblImageRow.Location = new System.Drawing.Point(273, 159);
             this.lblImageRow.Name = "lblImageRow";
             this.lblImageRow.Size = new System.Drawing.Size(29, 12);
             this.lblImageRow.TabIndex = 3;
@@ -646,7 +660,7 @@
             // 
             // txbImageProcData
             // 
-            this.txbImageProcData.Location = new System.Drawing.Point(5, 15);
+            this.txbImageProcData.Location = new System.Drawing.Point(4, 15);
             this.txbImageProcData.Multiline = true;
             this.txbImageProcData.Name = "txbImageProcData";
             this.txbImageProcData.ReadOnly = true;
@@ -685,16 +699,16 @@
             // 
             // chartImageGray
             // 
-            chartArea6.Name = "ChartArea1";
-            this.chartImageGray.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            this.chartImageGray.Legends.Add(legend6);
+            chartArea4.Name = "ChartArea1";
+            this.chartImageGray.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chartImageGray.Legends.Add(legend4);
             this.chartImageGray.Location = new System.Drawing.Point(5, 15);
             this.chartImageGray.Name = "chartImageGray";
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Gray";
-            this.chartImageGray.Series.Add(series6);
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Gray";
+            this.chartImageGray.Series.Add(series4);
             this.chartImageGray.Size = new System.Drawing.Size(357, 201);
             this.chartImageGray.TabIndex = 1;
             this.chartImageGray.Text = "chart1";
@@ -702,7 +716,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.pictureBoxBinaryImage);
+            this.groupBox1.Controls.Add(this.binaryImagePictureBox);
             this.groupBox1.Location = new System.Drawing.Point(4, 231);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(295, 221);
@@ -710,20 +724,21 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Binary Image";
             // 
-            // pictureBoxBinaryImage
+            // binaryImagePictureBox
             // 
-            this.pictureBoxBinaryImage.BackColor = System.Drawing.Color.DarkGray;
-            this.pictureBoxBinaryImage.ContextMenuStrip = this.contextMenuStrip;
-            this.pictureBoxBinaryImage.Location = new System.Drawing.Point(5, 15);
-            this.pictureBoxBinaryImage.Name = "pictureBoxBinaryImage";
-            this.pictureBoxBinaryImage.Size = new System.Drawing.Size(284, 201);
-            this.pictureBoxBinaryImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxBinaryImage.TabIndex = 0;
-            this.pictureBoxBinaryImage.TabStop = false;
+            this.binaryImagePictureBox.BackColor = System.Drawing.Color.DarkGray;
+            this.binaryImagePictureBox.ContextMenuStrip = this.contextMenuStrip;
+            this.binaryImagePictureBox.Location = new System.Drawing.Point(5, 15);
+            this.binaryImagePictureBox.Name = "binaryImagePictureBox";
+            this.binaryImagePictureBox.Size = new System.Drawing.Size(284, 201);
+            this.binaryImagePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.binaryImagePictureBox.TabIndex = 0;
+            this.binaryImagePictureBox.TabStop = false;
+            this.binaryImagePictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.binaryImagePictureBox_MouseMove);
             // 
             // groupBoxOriginalImage
             // 
-            this.groupBoxOriginalImage.Controls.Add(this.pictureBoxOriginalImage);
+            this.groupBoxOriginalImage.Controls.Add(this.originalImagePictureBox);
             this.groupBoxOriginalImage.Location = new System.Drawing.Point(4, 5);
             this.groupBoxOriginalImage.Name = "groupBoxOriginalImage";
             this.groupBoxOriginalImage.Size = new System.Drawing.Size(295, 221);
@@ -731,20 +746,21 @@
             this.groupBoxOriginalImage.TabStop = false;
             this.groupBoxOriginalImage.Text = "Original Image";
             // 
-            // pictureBoxOriginalImage
+            // originalImagePictureBox
             // 
-            this.pictureBoxOriginalImage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.originalImagePictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxOriginalImage.BackColor = System.Drawing.Color.DarkGray;
-            this.pictureBoxOriginalImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxOriginalImage.ContextMenuStrip = this.contextMenuStrip;
-            this.pictureBoxOriginalImage.Location = new System.Drawing.Point(6, 15);
-            this.pictureBoxOriginalImage.Name = "pictureBoxOriginalImage";
-            this.pictureBoxOriginalImage.Size = new System.Drawing.Size(284, 202);
-            this.pictureBoxOriginalImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxOriginalImage.TabIndex = 0;
-            this.pictureBoxOriginalImage.TabStop = false;
+            this.originalImagePictureBox.BackColor = System.Drawing.Color.DarkGray;
+            this.originalImagePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.originalImagePictureBox.ContextMenuStrip = this.contextMenuStrip;
+            this.originalImagePictureBox.Location = new System.Drawing.Point(6, 15);
+            this.originalImagePictureBox.Name = "originalImagePictureBox";
+            this.originalImagePictureBox.Size = new System.Drawing.Size(284, 202);
+            this.originalImagePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.originalImagePictureBox.TabIndex = 0;
+            this.originalImagePictureBox.TabStop = false;
+            this.originalImagePictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.originalImagePictureBox_MouseMove);
             // 
             // tabPageScope
             // 
@@ -761,7 +777,7 @@
             this.tabPageNetWorker.Name = "tabPageNetWorker";
             this.tabPageNetWorker.Size = new System.Drawing.Size(677, 454);
             this.tabPageNetWorker.TabIndex = 3;
-            this.tabPageNetWorker.Text = "Net Worker";
+            this.tabPageNetWorker.Text = "NetWorker";
             this.tabPageNetWorker.UseVisualStyleBackColor = true;
             // 
             // groupBoxCOMCtrl
@@ -850,6 +866,7 @@
             this.listBoxFiles.Name = "listBoxFiles";
             this.listBoxFiles.Size = new System.Drawing.Size(142, 148);
             this.listBoxFiles.TabIndex = 6;
+            this.listBoxFiles.DoubleClick += new System.EventHandler(this.listBoxFiles_DoubleClick);
             // 
             // btnFileEmpty
             // 
@@ -887,9 +904,9 @@
             this.btnFileDelete.Name = "btnFileDelete";
             this.btnFileDelete.Size = new System.Drawing.Size(90, 23);
             this.btnFileDelete.TabIndex = 2;
-            this.btnFileDelete.Text = "Delete";
+            this.btnFileDelete.Text = "Close";
             this.btnFileDelete.UseVisualStyleBackColor = true;
-            this.btnFileDelete.Click += new System.EventHandler(this.btnFileDelete_Click);
+            this.btnFileDelete.Click += new System.EventHandler(this.btnFileClose_Click);
             // 
             // btnFileSave
             // 
@@ -911,6 +928,10 @@
             this.btnFileOpen.UseVisualStyleBackColor = true;
             this.btnFileOpen.Click += new System.EventHandler(this.btnFileOpen_Click);
             // 
+            // progressbarTimer
+            // 
+            this.progressbarTimer.Tick += new System.EventHandler(this.progressbarTimer_Tick);
+            // 
             // frmMian
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -924,7 +945,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.mainMenuBar;
             this.Name = "frmMian";
-            this.Text = "Apollo Smartcar Warrior Beta 0.1.0";
+            this.Text = "Apollo Smartcar Warrior Beta 0.1.1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMian_FormClosed);
             this.Load += new System.EventHandler(this.frmMian_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMian_KeyDown);
@@ -947,9 +968,9 @@
             this.groupBoxImageGray.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartImageGray)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBinaryImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.binaryImagePictureBox)).EndInit();
             this.groupBoxOriginalImage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOriginalImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.originalImagePictureBox)).EndInit();
             this.groupBoxCOMCtrl.ResumeLayout(false);
             this.groupBoxCOMCtrl.PerformLayout();
             this.groupBoxFileCtrl.ResumeLayout(false);
@@ -990,9 +1011,9 @@
         private System.Windows.Forms.TextBox txbSerialReceiveData;
         private System.Windows.Forms.GroupBox groupBoxImageGray;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.PictureBox pictureBoxBinaryImage;
+        private System.Windows.Forms.PictureBox binaryImagePictureBox;
         private System.Windows.Forms.GroupBox groupBoxOriginalImage;
-        private System.Windows.Forms.PictureBox pictureBoxOriginalImage;
+        private System.Windows.Forms.PictureBox originalImagePictureBox;
         private System.Windows.Forms.Button btnSerialportSearch;
         private System.Windows.Forms.GroupBox groupBoxSerialRxAndTxCtrl;
         private System.Windows.Forms.RadioButton rbtnSerialHex;
@@ -1031,7 +1052,7 @@
         private System.Windows.Forms.Button btnSerialReceive;
         private System.Windows.Forms.CheckBox checkBoxSerialAutoSend;
         private System.Windows.Forms.Label lblImageRow;
-        private System.Windows.Forms.Button btnFilp;
+        private System.Windows.Forms.Button btnImageFilp;
         private System.Windows.Forms.Label lblImageThreshold;
         private System.Windows.Forms.Label lblImageCol;
         private System.Windows.Forms.ToolStripStatusLabel tlblSerialRxCnt;
@@ -1041,6 +1062,8 @@
         private System.Windows.Forms.Label lblImageColNumber;
         private System.Windows.Forms.Label lblImageRowNumber;
         private System.Windows.Forms.NumericUpDown numericUpDownImageThreshold;
+        private System.Windows.Forms.Button btnBinaryGray;
+        private System.Windows.Forms.Timer progressbarTimer;
     }
 }
 

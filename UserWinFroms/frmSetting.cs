@@ -166,6 +166,34 @@ namespace UserWinFroms
             SavaSettingToJson();
         }
 
+        public int ParityConvert(string str)
+        {
+            int tmp = 0;
+            switch (str)
+            {
+                case "None":
+                    tmp = 0;
+                    break;
+                case "Odd":
+                    tmp = 1;
+                    break;
+                case "Even":
+                    tmp = 2;
+                    break;
+                case "Mark":
+                    tmp = 3;
+                    break;
+                case "Space":
+                    tmp = 4;
+                    break;
+                default:
+                    tmp = 0;
+                    break;
+            }
+
+            return tmp;
+        }
+
         #region "Serial Port Setting Init"
         /// <summary>
         /// 串口配置选项初始化

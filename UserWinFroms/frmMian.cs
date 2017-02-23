@@ -10,6 +10,8 @@ using System.IO;
 using System.Windows.Forms;
 using System.IO.Ports;
 using DataProcessingLibrary.SerialPort;
+using DataProcessingLibrary.Image;
+using System.Threading;
 
 namespace UserWinFroms
 {
@@ -22,13 +24,16 @@ namespace UserWinFroms
         private OpenFileDialog mOpenFileDialog;
         private SaveFileDialog mSaveFileDialog;
         private SerialPort mSerialPort;
-        private Timer autoSendTimer;
+        private ToolTip mToolTip;
+        private System.Windows.Forms.Timer autoSendTimer;
 
         /// <summary>
         /// 用户自定义类定义 
         /// </summary>
         frmSetting mFrmSetting;
-        
+        ImageInfo imageInfo;
+
+        #region "串口全局变量"
         IList<SerialPortInfo> serialInfoList = new List<SerialPortInfo>();// 可用串口集合
         private StringBuilder builder = new StringBuilder();//避免在事件处理方法中反复的创建，定义到外面。 
         private bool isHex = false;
@@ -36,6 +41,28 @@ namespace UserWinFroms
         private bool isListening = false;//用于检测是否没有执行完invoke相关操作，仅在单线程收发使用
         private bool isWaitSerialClose = false;// 等待关闭串口状态
         private long received_count = 0;//接收计数 
+        #endregion
+
+        #region "文件操作全局变量"
+        List<string> openFileList = new List<string>();
+        #endregion
+
+        #region "图像处理全局变量"
+        private int imageThreshold;
+        private bool isImageFilp = false;//图像是否翻转
+        private bool isBinaryGet = false;//是否以二值化图像的形式接收的
+        private int isImageSelectDoubleBuf = 1;
+        private bool isImageGetSuccess = false;
+        private byte[] imageDoubleBuf1;
+        private byte[] imageDoubleBuf2;
+        private byte[,] Image;
+        //接收图像和显示图像的线程
+        private Thread getImageThread;
+        private Thread showImageThread;
+        //显示的原始和处理后的bitmap
+        private Bitmap originalBitmap;
+        private Bitmap binaryBitmap;
+        #endregion
 
         /// <summary>
         /// 构造方法
@@ -67,9 +94,11 @@ namespace UserWinFroms
             mOpenFileDialog = new OpenFileDialog();
             mSaveFileDialog = new SaveFileDialog();
             mSerialPort = new SerialPort();
-            autoSendTimer = new Timer();
+            mToolTip = new ToolTip();
+            autoSendTimer = new System.Windows.Forms.Timer();
 
             mFrmSetting = new frmSetting();// 属性配置窗口
+            imageInfo = new ImageInfo();
 
             autoSendTimer.Tick += AutoSendTimer_Tick;
             #endregion
@@ -369,9 +398,9 @@ namespace UserWinFroms
         private void btnSerialportCtrl_Click(object sender, EventArgs e)
         {   
             // 检测当前是否有选择的串口可用
-            if (cmbCOMPort.SelectedValue == null) 
+            if (cmbCOMPort.SelectedItem == null) 
             {
-                MessageBox.Show("COM is invalid.");
+                MessageBox.Show("Serial port is invalid.");
                 return;// 无串口可用，直接退出
             }
 
@@ -381,9 +410,13 @@ namespace UserWinFroms
                 try
                 {
                     // 设置串口属性
-                    mSerialPort.PortName = cmbCOMPort.SelectedValue.ToString();
+                    mSerialPort.ReadTimeout = 8000;//串口读超时8秒
+                    mSerialPort.WriteTimeout = 8000;//串口写超时8秒，在1ms自动发送数据时拔掉串口，写超时5秒后，会自动停止发送，如果无超时设定，这时程序假死
+                    mSerialPort.ReadBufferSize = 1024;//数据读缓存
+                    mSerialPort.WriteBufferSize = 1024;//数据写缓存
+                    mSerialPort.PortName = cmbCOMPort.SelectedItem.ToString();
                     mSerialPort.BaudRate = Convert.ToInt32(mFrmSetting.setting.BaudRate);
-                    mSerialPort.Parity = (Parity)Convert.ToInt32(mFrmSetting.setting.Parity);
+                    mSerialPort.Parity = (Parity)mFrmSetting.ParityConvert(mFrmSetting.setting.Parity);
                     mSerialPort.DataBits = Convert.ToInt32(mFrmSetting.setting.DataBit);
                     mSerialPort.StopBits = (StopBits)Convert.ToInt32(mFrmSetting.setting.StopBit);
                     // 打开串口
@@ -402,6 +435,7 @@ namespace UserWinFroms
                 if (checkBoxSerialAutoSend.Checked == true)// 开启自动发送功能
                 {
                     autoSendTimer.Interval = Convert.ToInt32(txbSerilaSendPeriodTime.Text);
+                    autoSendTimer.Enabled = true;
                     autoSendTimer.Start();
                 }
             }
@@ -546,6 +580,26 @@ namespace UserWinFroms
 
         #region "File Ctrl"
         /// <summary>
+        /// 根据索引打开文件
+        /// </summary>
+        /// <param name="index"></param>
+        private void OpenFile(int index)
+        {
+            //文件格式识别
+            //string filename = mOpenFileDialog.FileName;
+            string filename = openFileList[index];
+            string fileFormat = Path.GetExtension(filename).ToLower();
+            if (fileFormat == ".txt")
+            {
+                ShowTxtFile(filename);//显示Txt文件
+            }
+            else if (fileFormat == ".jpg" || fileFormat == ".bmp" || fileFormat == ".png")
+            {
+                ShowImageFile(filename);//显示图像文件
+            }
+        }
+
+        /// <summary>
         /// 读取并显示txt文件
         /// </summary>
         /// <param name="filename">待读取显示的文件</param>
@@ -559,7 +613,9 @@ namespace UserWinFroms
                 using (StreamReader sr = new StreamReader(filename, System.Text.Encoding.GetEncoding("gb2312")))//支持中文编码
                 {
                     var str = sr.ReadToEnd();
+                    txbSerialReceiveData.AppendText("Filename:" + filename + "\r\n\n\n");
                     txbSerialReceiveData.AppendText(str);//把txt文件内容显示到串口数据接收区中
+                    tabControl.SelectedIndex = 0;//将tabcontrol切换到serial模块
                 }
             }
             else
@@ -574,7 +630,64 @@ namespace UserWinFroms
         /// <param name="filename"></param>
         private void ShowImageFile(string filename)
         {
+            using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            {
+                Bitmap bitmap = (Bitmap)Bitmap.FromFile(filename);//将打开的图像文件转为bitmap
 
+                if ((bitmap.Size.Height != imageInfo.Row) || (bitmap.Size.Width != imageInfo.Col))
+                {
+                    lblImageRowNumber.Text = bitmap.Size.Height.ToString();
+                    lblImageColNumber.Text = bitmap.Size.Width.ToString();
+                    imageInfo.Col = bitmap.Size.Width;
+                    imageInfo.Row = bitmap.Size.Height;
+                    originalBitmap = new Bitmap(imageInfo.Col, imageInfo.Row, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                    binaryBitmap = new Bitmap(imageInfo.Col, imageInfo.Row, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                    Image = new byte[imageInfo.Row, imageInfo.Col];//初始数组大小
+                    imageDoubleBuf1 = new byte[imageInfo.Col * imageInfo.Row];
+                    imageDoubleBuf2 = new byte[imageInfo.Col * imageInfo.Row];
+                }
+                for (int i = 0; i < bitmap.Height; i++)//将彩图转换为灰度图
+                {
+                    for (int j = 0; j < bitmap.Width; j++)
+                    {
+                        Image[i, j] = bitmap.GetPixel(j, i).R;
+                    }
+                }
+
+                Buf2OriginalBitmap();
+                Original2BinaryBitmap();
+                //显示
+            }
+        }
+
+        /// <summary>
+        /// 保存txt文件
+        /// </summary>
+        private void SaveTxtFile()
+        {
+            string str = txbSerialReceiveData.Text;//将要存储的文本信息装入临时字符串变量
+            
+            if (mSaveFileDialog.ShowDialog() == DialogResult.OK)//选择了文件
+            {
+                File.WriteAllText(mSaveFileDialog.FileName, str);
+                File.AppendAllText(mSaveFileDialog.FileName, "\r\n<!------" + DateTime.Now.ToString() + "------>\r\n");//数据最后插入时间戳
+            }
+        }
+
+        /// <summary>
+        /// 保存image文件
+        /// </summary>
+        private void SaveImageFile()
+        {
+            mSaveFileDialog.FileName = System.DateTime.Now.ToString("yyy年MM月dd日hh时mm分ss秒", System.Globalization.DateTimeFormatInfo.InvariantInfo) + ".jpg";
+            if (DialogResult.OK == mSaveFileDialog.ShowDialog())//正常打开保存文件窗口
+            {
+                originalImagePictureBox.Image.Save(mSaveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Bmp);
+            }
+            else
+            {
+                MessageBox.Show("Image Box is null!", "Warning", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Asterisk);
+            }
         }
 
         /// <summary>
@@ -587,6 +700,7 @@ namespace UserWinFroms
             //过滤文件格式
             mOpenFileDialog.Filter = "text file (*.txt)|*.txt|bmp files (*.bmp)|*.bmp|png files (*.png)|*.png|jpg files (*.jpg)|*.jpg";
             mOpenFileDialog.FilterIndex = 4;
+            mOpenFileDialog.Multiselect = true;//支持多选打开，并把文件列表显示到listbox上
 
             if (mOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -595,61 +709,396 @@ namespace UserWinFroms
                     foreach (string fName in mOpenFileDialog.FileNames)
                     {
                         listBoxFiles.Items.Add(Path.GetFileName(fName));
+                        openFileList.Add(fName);
                     }
 
                     listBoxFiles.SelectedIndex = 0;
-                    // Set the PictureBox to display the image. 
-                    //pictureBox1.Image = BitmapConverter.ToBitmap(imgCollection[0].Img);
-
-                    //文件格式识别
-                    string filename = mOpenFileDialog.FileName;
-                    string fileFormat = Path.GetExtension(filename).ToLower();
-                    if (fileFormat == ".txt")
-                    {
-                        ShowTxtFile(filename);//显示Txt文件
-                    }
-                    else if (fileFormat == ".jpg" || fileFormat == ".bmp" || fileFormat == ".png")
-                    {
-                        ShowImageFile(filename);//显示图像文件
-                    }
+                    
+                    OpenFile(listBoxFiles.SelectedIndex);
                 }
-                catch
+                catch 
                 {
-                    MessageBox.Show("There was an error." + "Check the path to correct file.");
+                    MessageBox.Show("Check the path to correct file first.");
                 }
             }
         }
 
+        /// <summary>
+        /// 保存文件操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFileSave_Click(object sender, EventArgs e)
         {
-
+            if (tabControl.SelectedIndex == 0)//保存txt文件
+            {
+                if (txbSerialReceiveData.Text != string.Empty)//存在可保存的TXT信息
+                {
+                    SaveTxtFile();
+                }
+                else
+                {
+                    MessageBox.Show("Save infomation is empty.");
+                }
+            }
+            else if (tabControl.SelectedIndex == 1)//保存图像文件
+            {
+                if (originalImagePictureBox.Image != null)//存在已显示的原始图像
+                {
+                    SaveImageFile();
+                }
+                else
+                {
+                    MessageBox.Show("Image is null!");
+                }
+            }
         }
 
-        private void btnFileDelete_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 关闭文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnFileClose_Click(object sender, EventArgs e)
         {
-
+            if (tabControl.SelectedIndex == 0)//关闭文本文件
+            {
+                if (txbSerialReceiveData.Text != string.Empty)
+                {
+                    txbSerialReceiveData.Text = string.Empty;
+                }
+            }
+            else if (tabControl.SelectedIndex == 1)
+            {
+                originalImagePictureBox.Image = null;
+                binaryImagePictureBox.Image = null;
+            }
         }
-
-        private void btnFileNext_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
+        /// <summary>
+        /// 清空图像显示组件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFileEmpty_Click(object sender, EventArgs e)
         {
-
+            originalImagePictureBox.Image = null;
+            binaryImagePictureBox.Image = null;
         }
 
+        /// <summary>
+        /// 打开目录中当前索引的上一个文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFilePreviousClick(object sender, EventArgs e)
         {
+            if (listBoxFiles.SelectedIndex == 0)
+            {
+                listBoxFiles.SelectedIndex = openFileList.Count - 1;
+                OpenFile(listBoxFiles.SelectedIndex);
+            }
+            else
+            {
+                listBoxFiles.SelectedIndex--;
+                OpenFile(listBoxFiles.SelectedIndex - 1);
+            }
+        }
 
+        /// <summary>
+        /// 打开下一个文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnFileNext_Click(object sender, EventArgs e)
+        {
+            if (listBoxFiles.SelectedIndex == openFileList.Count - 1)//当前为listbox中的最后一个文件
+            {
+                listBoxFiles.SelectedIndex = 0;
+                OpenFile(0);//打开第一个文件
+            }
+            else
+            {
+                listBoxFiles.SelectedIndex++;
+                OpenFile(listBoxFiles.SelectedIndex);
+            }
+        }
+
+        /// <summary>
+        /// 双击ListBox框选项打开对应文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listBoxFiles_DoubleClick(object sender, EventArgs e)
+        {
+            OpenFile(listBoxFiles.SelectedIndex);
         }
         #endregion
 
         #region "Image Ctrl"
+        /// <summary>
+        /// 接收图像线程
+        /// </summary>
+        private void GetImage()
+        {
+            //帧设置
+            int temp1 = Convert.ToInt32(mFrmSetting.setting.ImageHeader1);
+            int temp2 = Convert.ToInt32(mFrmSetting.setting.ImageHeader2);
+            int head1 = temp1 >> 8;
+            int head2 = temp1 & 0x00ff;
+            int head3 = temp2 >> 8;
+            int head4 = temp2 & 0x00ff;
+            int read1 = head1, read2 = head2, read3 = head3, read4 = head4;
+            progressbarTimer.Enabled = true;
+
+            while (true)
+            {
+                toolStripProgressBar.Value = 0;
+                mSerialPort.DiscardInBuffer();//清空串口接收缓存
+                while ((read1 != head1) || (read2 != head2) || (read3 != head3) || (read4 != head4))
+                {
+                    read1 = read2;
+                    read2 = read3;
+                    read3 = read4;
+                    read4 = mSerialPort.ReadByte();
+                }
+                while (mSerialPort.BytesToRead < (imageInfo.Row * imageInfo.Col)) ;//将数据存到fifo里面里面去，等fifo存到有一幅图像数据的数据量的时候 在帮一幅图像一次性取出来
+                //双缓冲切换接收
+                if (isImageSelectDoubleBuf == 1)
+                {
+                    isImageSelectDoubleBuf = 2;
+                    mSerialPort.Read(imageDoubleBuf1, 0, imageInfo.Row * imageInfo.Col - 1);
+                }
+                else if (isImageSelectDoubleBuf == 2)
+                {
+                    isImageSelectDoubleBuf = 1;
+                    mSerialPort.Read(imageDoubleBuf2, 0, imageInfo.Row * imageInfo.Col - 1);
+                }
+
+                isImageGetSuccess = true;//成功接收图像标志
+                toolStripProgressBar.Value = 100;
+            }
+        }
+
+        /// <summary>
+        /// 显示图像线程
+        /// </summary>
+        private void ShowImage()
+        {
+            while (true)
+            {
+                if (isImageGetSuccess == true)//成功接收图像
+                {
+                    isImageGetSuccess = false;
+                    //将接收到的一维图像转为二维图像
+                    if (isImageSelectDoubleBuf == 1)
+                    {
+                        Buf2ImageBuf(Image, imageDoubleBuf1);
+                    }
+                    else if (isImageSelectDoubleBuf == 2)
+                    {
+                        Buf2ImageBuf(Image, imageDoubleBuf2);
+                    }
+
+                    Buf2OriginalBitmap();//将二维数组转为bitmap
+                    Original2BinaryBitmap();//将原始图像二值化
+
+                    //使用对象复制 可以解决两个线程同时使用一个资源的问题
+                    DrawPicture(originalImagePictureBox, (Bitmap)originalBitmap);
+                    DrawPicture(binaryImagePictureBox, (Bitmap)binaryBitmap);
+                }
+            }
+        }
+
+        delegate void DrawPictureDelegate(PictureBox picture, Bitmap bitmap);
+        /// <summary>
+        /// 对象复制 两个线程同时使用一个资源
+        /// </summary>
+        /// <param name="picture"></param>
+        /// <param name="bitmap"></param>
+        private void DrawPicture(PictureBox picture, Bitmap bitmap)
+        {
+            if (picture.InvokeRequired)
+            {
+                DrawPictureDelegate tDelegate = new DrawPictureDelegate(DrawPicture);
+                picture.Invoke(tDelegate, new object[] { picture, bitmap });
+            }
+            else
+            {
+                picture.Refresh();//刷新图像控件
+                picture.Image = bitmap;//显示图像
+            }
+        }
+
+        /// <summary>
+        /// 将一维图像转为二维图像
+        /// </summary>
+        /// <param name="dstImage"></param>
+        /// <param name="srcBuf"></param>
+        private void Buf2ImageBuf(byte[,] dstImage, byte[] srcBuf)
+        {
+            if (isImageFilp == false)
+            {
+                for (int i = 0; i < imageInfo.Row; i++)
+                {
+                    for (int j = 0; j < imageInfo.Col; j++)
+                    {
+                        dstImage[i, j] = srcBuf[i * imageInfo.Row + j];
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < imageInfo.Row; i++)
+                {
+                    for (int j = 0; j < imageInfo.Col; j++)
+                    {
+                        dstImage[imageInfo.Row - 1 - i, imageInfo.Col - 1 - j] = srcBuf[i * imageInfo.Row + j];
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将原始图像转换为三色图显示
+        /// </summary>
+        private void Buf2OriginalBitmap()
+        {
+            Color color;
+            if (isBinaryGet == true)//以二值化后的形式接收数据
+            {
+                for (int i = 0; i < imageInfo.Row; i++)
+                {
+                    for (int j = 0; j < imageInfo.Col; j++)
+                    {
+                        if (Image[i, j] > 100)
+                            color = Color.FromArgb(0, 255, 255, 255);
+                        else
+                            color = Color.FromArgb(0, 0, 0, 0);
+                        originalBitmap.SetPixel(j, i, color);
+                    }
+                }
+            }
+            else//以灰度图的形式接收图像
+            {
+                for (int i = 0; i < imageInfo.Row; i++)
+                {
+                    for (int j = 0; j < imageInfo.Col; j++)
+                    {
+                        color = Color.FromArgb(0, Image[i, j], Image[i, j], Image[i, j]);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将原始图像二值化，并转换后的图像以三色图的形式显示
+        /// </summary>
+        private void Original2BinaryBitmap()
+        {
+            Color color;
+            if (isBinaryGet == true)//以二值化后的形式接收数据
+            {
+                for (int i = 0; i < imageInfo.Row; i++)
+                {
+                    for (int j = 0; j < imageInfo.Col; j++)
+                    {
+                        if (Image[i, j] > 100)
+                        {
+                            color = Color.FromArgb(0, 255, 255, 255);
+                        }
+                        else
+                        {
+                            color = Color.FromArgb(0, 0, 0, 0);
+                        }
+                        binaryBitmap.SetPixel(j, i, color);
+                    }
+                }
+            }
+            else//以灰度图的形式接收图像
+            {
+                //获取当前设定图像二值化阈值
+                int thresholdValue = imageThreshold;
+
+                for (int i = 0; i < imageInfo.Row; i++)
+                {
+                    for (int j = 0; j < imageInfo.Col; j++)
+                    {
+                        if (Image[i, j] >= thresholdValue)
+                        {
+                            color = Color.FromArgb(0, 255, 255, 255);
+                        }
+                        else
+                        {
+                            color = Color.FromArgb(0, 0, 0, 0);
+                        }
+                        binaryBitmap.SetPixel(j, i, color);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 打开和关闭图像接收操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnImageBegin_Click(object sender, EventArgs e)
         {
+            if (isComPortOpen == true)//确保串口已正常打开
+            {
+                if (btnImageBegin.Text == "Begin")
+                {
+                    imageThreshold = Convert.ToInt32(numericUpDownImageThreshold.Text);
+                    imageInfo.Row = Convert.ToInt32(mFrmSetting.setting.ImageRow);
+                    imageInfo.Col = Convert.ToInt32(mFrmSetting.setting.ImageCol);
+                    //实例化显示处理的bitmap
+                    originalBitmap = new Bitmap(imageInfo.Col, imageInfo.Row, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                    binaryBitmap = new Bitmap(imageInfo.Col, imageInfo.Row, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                    Image = new byte[imageInfo.Row, imageInfo.Col];//初始数组大小
+                    imageDoubleBuf1 = new byte[imageInfo.Col * imageInfo.Row];
+                    imageDoubleBuf2 = new byte[imageInfo.Col * imageInfo.Row];
+                    //实例化图像接收和显示线程
+                    getImageThread = new Thread(GetImage);
+                    showImageThread = new Thread(ShowImage);
+                    getImageThread.Start();
+                    showImageThread.Start();
+                    btnImageBegin.Text = "Stop";
 
+                    //组件属性设置
+                    btnSerialportCtrl.Enabled = false;
+                    btnFileOpen.Enabled = false;
+                    btnFileSave.Enabled = false;
+                    btnFilePrevious.Enabled = false;
+                    btnFileNext.Enabled = false;
+                    btnFileDelete.Enabled = false;
+
+                    usrSettingToolStripMenuItem.Enabled = false;//开始接收图像后无法设置图像属性
+                    tlblSerialStatus.Text = "Imager go";
+                }
+                else //if (btnImageBegin.Text == "Stop")
+                {
+                    btnImageBegin.Text = "Begin";
+                    getImageThread.Abort();//中止线程
+                    showImageThread.Abort();
+
+                    btnSerialportCtrl.Enabled = true;
+                    btnFileOpen.Enabled = true;
+                    btnFileSave.Enabled = true;
+                    btnFilePrevious.Enabled = true;
+                    btnFileNext.Enabled = true;
+                    btnFileDelete.Enabled = true;
+
+                    usrSettingToolStripMenuItem.Enabled = true;//开始接收图像后无法设置图像属性
+                    tlblSerialStatus.Text = "Ready";
+                    toolStripProgressBar.Value = 0;//进度条回归起点
+                    progressbarTimer.Enabled = false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please open serial port first.");
+            }
         }
 
         private void btnImageAlgorithm_Click(object sender, EventArgs e)
@@ -657,19 +1106,137 @@ namespace UserWinFroms
 
         }
 
+        /// <summary>
+        /// 显示图像灰度直方图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnImageGray_Click(object sender, EventArgs e)
         {
+            Bitmap bitmap = (Bitmap)originalImagePictureBox.Image;
+            int k = 0;//临时计数
+            int[] gray = new int[256];//灰度统计
+            byte[] allcolor = new byte[bitmap.Width * bitmap.Height];
 
+            if (bitmap != null)//确保图像不为空
+            {
+                //统计灰度值对应的次数
+                for (int i = 0; i < bitmap.Height; i++)
+                {
+                    for (int j = 0; j < bitmap.Width; j++)
+                    {
+                        if (k < bitmap.Width * bitmap.Height)
+                        {
+                            allcolor[k] = bitmap.GetPixel(j, i).R;
+                            gray[BitConverter.ToInt32(allcolor, k)]++;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < 256; i++)
+                {
+                    chartImageGray.Series[0].Points.AddXY(i, gray[i]);
+                }
+            }
         }
 
-        private void btnFilp_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 图像翻转
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnImageFilp_Click(object sender, EventArgs e)
         {
-
+            if (isImageFilp == true)
+            {
+                isImageFilp = false;
+                btnImageFilp.Text = "nFilp";
+            }
+            else
+            {
+                isImageFilp = true;
+                btnImageFilp.Text = "Filp";
+            }
         }
 
+        /// <summary>
+        /// 二值化或者灰度图的形式接收图像
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnBinaryGray_Click(object sender, EventArgs e)
+        {
+            if (isBinaryGet == true)
+            {
+                isBinaryGet = false;
+                btnBinaryGray.Text = "Pixel";
+            }
+            else
+            {
+                isBinaryGet = true;
+                btnBinaryGray.Text = "Binary";
+            }
+        }
+
+        /// <summary>
+        /// 图像阈值调节
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void numericUpDownImageThreshold_ValueChanged(object sender, EventArgs e)
         {
+            imageThreshold = Convert.ToInt32(numericUpDownImageThreshold.Text);
+        }
 
+        /// <summary>
+        /// 鼠标移动显示图片信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void originalImagePictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (originalImagePictureBox.Image != null)
+            {
+                int X = e.X * imageInfo.Col / originalImagePictureBox.Size.Width;
+                int Y = e.Y * imageInfo.Row / originalImagePictureBox.Size.Height;
+
+                if (X <= imageInfo.Col && Y <= imageInfo.Row)
+                {
+                    Color color = ((Bitmap)originalImagePictureBox.Image).GetPixel(X, Y);
+                    mToolTip.SetToolTip(originalImagePictureBox, "X:" + X + " Y:" + Y);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 鼠标移动显示图片信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void binaryImagePictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (binaryImagePictureBox.Image != null)
+            {
+                int X = e.X * imageInfo.Col / binaryImagePictureBox.Size.Width;
+                int Y = e.Y * imageInfo.Row / binaryImagePictureBox.Size.Height;
+
+                if (X <= imageInfo.Col && Y <= imageInfo.Row)
+                {
+                    Color color = ((Bitmap)binaryImagePictureBox.Image).GetPixel(X, Y);
+                    mToolTip.SetToolTip(binaryImagePictureBox, "X:" + X + " Y:" + Y + " Threshold:" + imageThreshold.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// 图像接收进度条定时
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void progressbarTimer_Tick(object sender, EventArgs e)
+        {
+            if (toolStripProgressBar.Value != 100)
+                toolStripProgressBar.Value += 1;
         }
         #endregion
     }

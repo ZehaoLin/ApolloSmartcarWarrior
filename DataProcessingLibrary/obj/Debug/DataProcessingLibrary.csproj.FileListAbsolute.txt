@@ -7,3 +7,4 @@ E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\DataProcessing
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\DataProcessingLibrary\bin\Debug\DataProcessingLibrary.pdb
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\DataProcessingLibrary\obj\Debug\DataProcessingLibrary.dll
 E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\DataProcessingLibrary\obj\Debug\DataProcessingLibrary.pdb
+E:\Works\Apollo智能车实验室\上位机\ApolloSmartcarWarrior\DataProcessingLibrary\obj\Debug\DataProcessingLibrary.csprojResolveAssemblyReference.cache

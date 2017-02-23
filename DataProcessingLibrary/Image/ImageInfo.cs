@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataProcessingLibrary.Image
 {
-    class ImageInfo
+    public class ImageInfo
     {
+        public int Row { get; set; }
+        public int Col { get; set; }
     }
 }
