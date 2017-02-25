@@ -72,7 +72,7 @@ namespace UserWinFroms
                 this.Close();
             };
 
-            new frmMian(callback).Show();
+            new frmMain(callback).Show();
         }
     }
 }

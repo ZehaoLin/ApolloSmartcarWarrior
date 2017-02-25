@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace UserWinFroms
 {
-    public partial class frmMian : Form
+    public partial class frmMain : Form
     {
         /// <summary>
         /// 系统组件定义
@@ -30,6 +30,7 @@ namespace UserWinFroms
         /// <summary>
         /// 用户自定义类定义 
         /// </summary>
+        frmImageAlgorithm imageAlgorithm;
         frmSetting mFrmSetting;
         ImageInfo imageInfo;
 
@@ -56,6 +57,7 @@ namespace UserWinFroms
         private byte[] imageDoubleBuf1;
         private byte[] imageDoubleBuf2;
         private byte[,] Image;
+        private byte[,] afterImage;//算法处理后的二维图像
         //接收图像和显示图像的线程
         private Thread getImageThread;
         private Thread showImageThread;
@@ -68,7 +70,7 @@ namespace UserWinFroms
         /// 构造方法
         /// </summary>
         /// <param name="callback"></param>
-        public frmMian(Action callback)
+        public frmMain(Action callback)
         {
             InitializeComponent();
             this.callback = callback;//实例化回调关闭起始界面
@@ -98,6 +100,7 @@ namespace UserWinFroms
             autoSendTimer = new System.Windows.Forms.Timer();
 
             mFrmSetting = new frmSetting();// 属性配置窗口
+            imageAlgorithm = new frmImageAlgorithm();
             imageInfo = new ImageInfo();
 
             autoSendTimer.Tick += AutoSendTimer_Tick;
@@ -212,7 +215,11 @@ namespace UserWinFroms
             tlblSerialStatus.Text = "Ready";
             isComPortOpen = false;
             btnSerialSend.Enabled = true;
+            btnSerialportSearch.Enabled = true;
             usrSettingToolStripMenuItem.Enabled = true;
+            rbtnSerialChar.Enabled = true;
+            rbtnSerialHex.Enabled = true;
+            cmbCOMPort.Enabled = true;
             rbtnSerialChar.Enabled = true;
             rbtnSerialHex.Enabled = true;
             toolStripProgressBar.Value = 0;//状态栏进度条
@@ -305,7 +312,7 @@ namespace UserWinFroms
                 for (int i = 0; i < times; i++)
                 {
                     mSerialPort.Write(buf, i * 1000, 1000);
-                    var tmp = tlblSerialTxCnt.Text;
+                    var tmp = tlblSerialTxCntNymber.Text;
                     tlblSerialTxCnt.Text = (Convert.ToInt32(tmp) + 1000).ToString();//刷新发送字节数
                 }
 
@@ -313,13 +320,13 @@ namespace UserWinFroms
                 if (buf.Length % 1000 != 0)
                 {
                     mSerialPort.Write(buf, times * 1000, buf.Length % 1000);
-                    var tmp = tlblSerialTxCnt.Text;
+                    var tmp = tlblSerialTxCntNymber.Text;
                     tlblSerialTxCntNymber.Text = (Convert.ToInt32(tmp) + buf.Length % 1000).ToString();//刷新发送字节数
                 }
 
                 toolStripProgressBar.Value = 100;//状态栏进度条
             }
-            catch //发送数据异常
+            catch (Exception ex)//发送数据异常
             {
                 if (mSerialPort.IsOpen == false)
                 {
@@ -327,7 +334,7 @@ namespace UserWinFroms
                 }
                 else
                 {
-                    MessageBox.Show("Unable to close the serial port for an unknown reason!");
+                    MessageBox.Show(ex.Message + "\nUnable to close the serial port for an unknown reason!");
                 }
             }
         }
@@ -385,8 +392,6 @@ namespace UserWinFroms
             finally
             {
                 isListening = false;
-                rbtnSerialChar.Enabled = true;
-                rbtnSerialHex.Enabled = true;
             }
         }
 
@@ -510,7 +515,7 @@ namespace UserWinFroms
         {
             if (isComPortOpen == true)//确保串口是开启状态
             {
-                btnSerialSend.Enabled = false;
+                //btnSerialSend.Enabled = false;
                 rbtnSerialChar.Enabled = false;
                 rbtnSerialHex.Enabled = false;
                 toolStripProgressBar.Value = 100;//状态栏进度条
@@ -575,6 +580,25 @@ namespace UserWinFroms
         private void btnSerialClearTx_Click(object sender, EventArgs e)
         {
             txbSerialSendData.Text = string.Empty;
+        }
+
+        /// <summary>
+        /// 激活或关闭自动发送功能
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBoxSerialAutoSend_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxSerialAutoSend.Checked == true)// 开启自动发送功能
+            {
+                autoSendTimer.Interval = Convert.ToInt32(txbSerilaSendPeriodTime.Text);
+                autoSendTimer.Enabled = true;
+                autoSendTimer.Start();
+            }
+            else
+            {
+                autoSendTimer.Enabled = false;
+            }
         }
         #endregion
 
@@ -1101,9 +1125,27 @@ namespace UserWinFroms
             }
         }
 
+        /// <summary>
+        /// 图像算法处理操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnImageAlgorithm_Click(object sender, EventArgs e)
         {
+            if (binaryImagePictureBox.Image != null)//确保有图像处理
+            {
+                imageAlgorithm.Image = this.Image;
+                Bitmap bitmap = (Bitmap)binaryImagePictureBox.Image;
 
+                imageAlgorithm.ShowDialog();//显示动态编译代码窗口，且占用主动权
+                afterImage = imageAlgorithm.Image;//处理后的图像
+                
+                DrawPicture(binaryImagePictureBox, (Bitmap)bitmap.Clone());
+            }
+            else
+            {
+                MessageBox.Show("Not image can be proccessed.");
+            }
         }
 
         /// <summary>

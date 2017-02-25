@@ -1,6 +1,6 @@
 ﻿namespace UserWinFroms
 {
-    partial class frmMian
+    partial class frmMain
     {
         /// <summary>
         /// Required designer variable.
@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.mainMenuBar = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -433,6 +433,7 @@
             this.checkBoxSerialAutoSend.TabIndex = 7;
             this.checkBoxSerialAutoSend.Text = "Auto Send";
             this.checkBoxSerialAutoSend.UseVisualStyleBackColor = true;
+            this.checkBoxSerialAutoSend.CheckedChanged += new System.EventHandler(this.checkBoxSerialAutoSend_CheckedChanged);
             // 
             // lblUnitMs
             // 
@@ -699,16 +700,16 @@
             // 
             // chartImageGray
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartImageGray.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chartImageGray.Legends.Add(legend4);
+            chartArea3.Name = "ChartArea1";
+            this.chartImageGray.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartImageGray.Legends.Add(legend3);
             this.chartImageGray.Location = new System.Drawing.Point(5, 15);
             this.chartImageGray.Name = "chartImageGray";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Gray";
-            this.chartImageGray.Series.Add(series4);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Gray";
+            this.chartImageGray.Series.Add(series3);
             this.chartImageGray.Size = new System.Drawing.Size(357, 201);
             this.chartImageGray.TabIndex = 1;
             this.chartImageGray.Text = "chart1";
@@ -797,11 +798,11 @@
             // lblCOMStatus
             // 
             this.lblCOMStatus.AutoSize = true;
-            this.lblCOMStatus.Location = new System.Drawing.Point(17, 108);
+            this.lblCOMStatus.Location = new System.Drawing.Point(6, 108);
             this.lblCOMStatus.Name = "lblCOMStatus";
-            this.lblCOMStatus.Size = new System.Drawing.Size(113, 12);
+            this.lblCOMStatus.Size = new System.Drawing.Size(131, 12);
             this.lblCOMStatus.TabIndex = 4;
-            this.lblCOMStatus.Text = "COM Port is close.";
+            this.lblCOMStatus.Text = "Serial port is close.";
             // 
             // btnSerialportSearch
             // 
@@ -932,7 +933,7 @@
             // 
             this.progressbarTimer.Tick += new System.EventHandler(this.progressbarTimer_Tick);
             // 
-            // frmMian
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -944,8 +945,8 @@
             this.Controls.Add(this.mainMenuBar);
             this.KeyPreview = true;
             this.MainMenuStrip = this.mainMenuBar;
-            this.Name = "frmMian";
-            this.Text = "Apollo Smartcar Warrior Beta 0.1.1";
+            this.Name = "frmMain";
+            this.Text = "Apollo Smartcar Warrior Beta 0.1.2";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMian_FormClosed);
             this.Load += new System.EventHandler(this.frmMian_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMian_KeyDown);
