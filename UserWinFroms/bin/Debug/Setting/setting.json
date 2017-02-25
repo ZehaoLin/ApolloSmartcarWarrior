@@ -1,1 +1,2 @@
-{"BaudRate":"115200","DataBit":"8","ImageCol":"160","ImageHeader1":"00FF","ImageHeader2":"0100","ImageRow":"120","Parity":"None","ParityData":"","StopBit":"1"}
+{"BaudRate":"115200","DataBit":"8","ImageCol":"120","ImageHeader1":"00FF","ImageHeader2":"0100","ImageRow":"64","Parity":"None","ParityData":"","StopBit":"1"}
+

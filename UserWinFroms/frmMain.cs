@@ -669,6 +669,7 @@ namespace UserWinFroms
                     Image = new byte[imageInfo.Row, imageInfo.Col];//初始数组大小
                     imageDoubleBuf1 = new byte[imageInfo.Col * imageInfo.Row];
                     imageDoubleBuf2 = new byte[imageInfo.Col * imageInfo.Row];
+                    tabControl.SelectedIndex = 1;
                 }
                 for (int i = 0; i < bitmap.Height; i++)//将彩图转换为灰度图
                 {
@@ -681,6 +682,8 @@ namespace UserWinFroms
                 Buf2OriginalBitmap();
                 Original2BinaryBitmap();
                 //显示
+                DrawPicture(originalImagePictureBox, (Bitmap)originalBitmap.Clone());
+                DrawPicture(binaryImagePictureBox, (Bitmap)binaryBitmap.Clone());
             }
         }
 
@@ -866,8 +869,8 @@ namespace UserWinFroms
         private void GetImage()
         {
             //帧设置
-            int temp1 = Convert.ToInt32(mFrmSetting.setting.ImageHeader1);
-            int temp2 = Convert.ToInt32(mFrmSetting.setting.ImageHeader2);
+            int temp1 = Convert.ToInt32("0x" + mFrmSetting.setting.ImageHeader1, 16);
+            int temp2 = Convert.ToInt32("0x" + mFrmSetting.setting.ImageHeader2, 16);
             int head1 = temp1 >> 8;
             int head2 = temp1 & 0x00ff;
             int head3 = temp2 >> 8;
@@ -900,7 +903,7 @@ namespace UserWinFroms
                 }
 
                 isImageGetSuccess = true;//成功接收图像标志
-                toolStripProgressBar.Value = 100;
+                //toolStripProgressBar.Value = 100;
             }
         }
 
@@ -928,8 +931,8 @@ namespace UserWinFroms
                     Original2BinaryBitmap();//将原始图像二值化
 
                     //使用对象复制 可以解决两个线程同时使用一个资源的问题
-                    DrawPicture(originalImagePictureBox, (Bitmap)originalBitmap);
-                    DrawPicture(binaryImagePictureBox, (Bitmap)binaryBitmap);
+                    DrawPicture(originalImagePictureBox, (Bitmap)originalBitmap.Clone());
+                    DrawPicture(binaryImagePictureBox, (Bitmap)binaryBitmap.Clone());
                 }
             }
         }
@@ -967,7 +970,7 @@ namespace UserWinFroms
                 {
                     for (int j = 0; j < imageInfo.Col; j++)
                     {
-                        dstImage[i, j] = srcBuf[i * imageInfo.Row + j];
+                        dstImage[i, j] = srcBuf[i * imageInfo.Col + j];
                     }
                 }
             }
@@ -977,7 +980,7 @@ namespace UserWinFroms
                 {
                     for (int j = 0; j < imageInfo.Col; j++)
                     {
-                        dstImage[imageInfo.Row - 1 - i, imageInfo.Col - 1 - j] = srcBuf[i * imageInfo.Row + j];
+                        dstImage[imageInfo.Row - 1 - i, imageInfo.Col - 1 - j] = srcBuf[i * imageInfo.Col + j];
                     }
                 }
             }
@@ -988,14 +991,14 @@ namespace UserWinFroms
         /// </summary>
         private void Buf2OriginalBitmap()
         {
-            Color color;
             if (isBinaryGet == true)//以二值化后的形式接收数据
             {
                 for (int i = 0; i < imageInfo.Row; i++)
                 {
                     for (int j = 0; j < imageInfo.Col; j++)
                     {
-                        if (Image[i, j] > 100)
+                        Color color;
+                        if (Image[i, j] >= 1)
                             color = Color.FromArgb(0, 255, 255, 255);
                         else
                             color = Color.FromArgb(0, 0, 0, 0);
@@ -1009,7 +1012,9 @@ namespace UserWinFroms
                 {
                     for (int j = 0; j < imageInfo.Col; j++)
                     {
+                        Color color;
                         color = Color.FromArgb(0, Image[i, j], Image[i, j], Image[i, j]);
+                        originalBitmap.SetPixel(j, i, color);
                     }
                 }
             }
@@ -1027,7 +1032,7 @@ namespace UserWinFroms
                 {
                     for (int j = 0; j < imageInfo.Col; j++)
                     {
-                        if (Image[i, j] > 100)
+                        if (Image[i, j] >= 1)
                         {
                             color = Color.FromArgb(0, 255, 255, 255);
                         }
@@ -1099,6 +1104,8 @@ namespace UserWinFroms
 
                     usrSettingToolStripMenuItem.Enabled = false;//开始接收图像后无法设置图像属性
                     tlblSerialStatus.Text = "Imager go";
+                    lblImageRowNumber.Text = imageInfo.Row.ToString();
+                    lblImageColNumber.Text = imageInfo.Col.ToString();
                 }
                 else //if (btnImageBegin.Text == "Stop")
                 {
@@ -1135,7 +1142,7 @@ namespace UserWinFroms
             if (binaryImagePictureBox.Image != null)//确保有图像处理
             {
                 imageAlgorithm.Image = this.Image;
-                Bitmap bitmap = (Bitmap)binaryImagePictureBox.Image;
+                Bitmap bitmap = (Bitmap)binaryImagePictureBox.Image.Clone();
 
                 imageAlgorithm.ShowDialog();//显示动态编译代码窗口，且占用主动权
                 afterImage = imageAlgorithm.Image;//处理后的图像
@@ -1155,7 +1162,7 @@ namespace UserWinFroms
         /// <param name="e"></param>
         private void btnImageGray_Click(object sender, EventArgs e)
         {
-            Bitmap bitmap = (Bitmap)originalImagePictureBox.Image;
+            Bitmap bitmap = (Bitmap)originalImagePictureBox.Image.Clone();
             int k = 0;//临时计数
             int[] gray = new int[256];//灰度统计
             byte[] allcolor = new byte[bitmap.Width * bitmap.Height];
@@ -1177,7 +1184,7 @@ namespace UserWinFroms
 
                 for (int i = 0; i < 256; i++)
                 {
-                    chartImageGray.Series[0].Points.AddXY(i, gray[i]);
+                    chartImageGray.Series[0].Points.AddXY(i + 1, gray[i] + 1);
                 }
             }
         }
@@ -1211,12 +1218,12 @@ namespace UserWinFroms
             if (isBinaryGet == true)
             {
                 isBinaryGet = false;
-                btnBinaryGray.Text = "Pixel";
+                btnBinaryGray.Text = "Binary";
             }
             else
             {
                 isBinaryGet = true;
-                btnBinaryGray.Text = "Binary";
+                btnBinaryGray.Text = "Pixel";
             }
         }
 
@@ -1239,13 +1246,17 @@ namespace UserWinFroms
         {
             if (originalImagePictureBox.Image != null)
             {
-                int X = e.X * imageInfo.Col / originalImagePictureBox.Size.Width;
-                int Y = e.Y * imageInfo.Row / originalImagePictureBox.Size.Height;
-
-                if (X <= imageInfo.Col && Y <= imageInfo.Row)
+                Bitmap bitmap = new Bitmap(originalImagePictureBox.Image);
+                if (bitmap != null)
                 {
-                    Color color = ((Bitmap)originalImagePictureBox.Image).GetPixel(X, Y);
-                    mToolTip.SetToolTip(originalImagePictureBox, "X:" + X + " Y:" + Y);
+                    int X = e.X * bitmap.Size.Width / originalImagePictureBox.Size.Width;
+                    int Y = e.Y * bitmap.Size.Height / originalImagePictureBox.Size.Height;
+
+                    if (X <= bitmap.Size.Width && Y <= bitmap.Size.Height)
+                    {
+                        Color color = bitmap.GetPixel(X, Y);
+                        mToolTip.SetToolTip(originalImagePictureBox, "X:" + X + " Y:" + Y + " Threshold:" + imageThreshold);
+                    }
                 }
             }
         }
@@ -1259,13 +1270,17 @@ namespace UserWinFroms
         {
             if (binaryImagePictureBox.Image != null)
             {
-                int X = e.X * imageInfo.Col / binaryImagePictureBox.Size.Width;
-                int Y = e.Y * imageInfo.Row / binaryImagePictureBox.Size.Height;
-
-                if (X <= imageInfo.Col && Y <= imageInfo.Row)
+                Bitmap bitmap = new Bitmap((Bitmap)binaryImagePictureBox.Image.Clone());
+                if (bitmap != null)
                 {
-                    Color color = ((Bitmap)binaryImagePictureBox.Image).GetPixel(X, Y);
-                    mToolTip.SetToolTip(binaryImagePictureBox, "X:" + X + " Y:" + Y + " Threshold:" + imageThreshold.ToString());
+                    int X = e.X * bitmap.Size.Width / binaryImagePictureBox.Size.Width;
+                    int Y = e.Y * bitmap.Size.Height / binaryImagePictureBox.Size.Height;
+
+                    if (X <= bitmap.Size.Width && Y <= bitmap.Size.Height)
+                    {
+                        Color color = bitmap.GetPixel(X, Y);
+                        mToolTip.SetToolTip(binaryImagePictureBox, "X:" + X + " Y:" + Y);
+                    }
                 }
             }
         }

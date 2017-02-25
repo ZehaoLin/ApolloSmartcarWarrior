@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.mainMenuBar = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,7 +143,8 @@
             this.helpToolStripMenuItem});
             this.mainMenuBar.Location = new System.Drawing.Point(0, 0);
             this.mainMenuBar.Name = "mainMenuBar";
-            this.mainMenuBar.Size = new System.Drawing.Size(855, 25);
+            this.mainMenuBar.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.mainMenuBar.Size = new System.Drawing.Size(997, 25);
             this.mainMenuBar.TabIndex = 0;
             this.mainMenuBar.Text = "menuStripMainFrm";
             // 
@@ -281,46 +282,47 @@
             this.tlblSerialRxCntNumber,
             this.tlblSerialTxCnt,
             this.tlblSerialTxCntNymber});
-            this.statusStrip.Location = new System.Drawing.Point(0, 510);
+            this.statusStrip.Location = new System.Drawing.Point(0, 596);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(855, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.statusStrip.Size = new System.Drawing.Size(997, 25);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip";
             // 
             // tlblSerialStatus
             // 
             this.tlblSerialStatus.Name = "tlblSerialStatus";
-            this.tlblSerialStatus.Size = new System.Drawing.Size(44, 17);
+            this.tlblSerialStatus.Size = new System.Drawing.Size(44, 20);
             this.tlblSerialStatus.Text = "Ready";
             // 
             // toolStripProgressBar
             // 
             this.toolStripProgressBar.Name = "toolStripProgressBar";
-            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.toolStripProgressBar.Size = new System.Drawing.Size(117, 19);
             this.toolStripProgressBar.Step = 1;
             // 
             // tlblSerialRxCnt
             // 
             this.tlblSerialRxCnt.Name = "tlblSerialRxCnt";
-            this.tlblSerialRxCnt.Size = new System.Drawing.Size(65, 17);
+            this.tlblSerialRxCnt.Size = new System.Drawing.Size(65, 20);
             this.tlblSerialRxCnt.Text = "          Rx:";
             // 
             // tlblSerialRxCntNumber
             // 
             this.tlblSerialRxCntNumber.Name = "tlblSerialRxCntNumber";
-            this.tlblSerialRxCntNumber.Size = new System.Drawing.Size(15, 17);
+            this.tlblSerialRxCntNumber.Size = new System.Drawing.Size(15, 20);
             this.tlblSerialRxCntNumber.Text = "0";
             // 
             // tlblSerialTxCnt
             // 
             this.tlblSerialTxCnt.Name = "tlblSerialTxCnt";
-            this.tlblSerialTxCnt.Size = new System.Drawing.Size(64, 17);
+            this.tlblSerialTxCnt.Size = new System.Drawing.Size(64, 20);
             this.tlblSerialTxCnt.Text = "          Tx:";
             // 
             // tlblSerialTxCntNymber
             // 
             this.tlblSerialTxCntNymber.Name = "tlblSerialTxCntNymber";
-            this.tlblSerialTxCntNymber.Size = new System.Drawing.Size(15, 17);
+            this.tlblSerialTxCntNymber.Size = new System.Drawing.Size(15, 20);
             this.tlblSerialTxCntNymber.Text = "0";
             // 
             // contextMenuStrip
@@ -334,10 +336,10 @@
             this.tabControl.Controls.Add(this.tabPageImage);
             this.tabControl.Controls.Add(this.tabPageScope);
             this.tabControl.Controls.Add(this.tabPageNetWorker);
-            this.tabControl.Location = new System.Drawing.Point(8, 28);
+            this.tabControl.Location = new System.Drawing.Point(9, 33);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(685, 480);
+            this.tabControl.Size = new System.Drawing.Size(799, 560);
             this.tabControl.TabIndex = 3;
             // 
             // tabPageSerial
@@ -346,10 +348,10 @@
             this.tabPageSerial.Controls.Add(this.groupBoxSerialRxAndTxCtrl);
             this.tabPageSerial.Controls.Add(this.groupBoxSeriaSendData);
             this.tabPageSerial.Controls.Add(this.groupBoxSerialReceiveData);
-            this.tabPageSerial.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSerial.Location = new System.Drawing.Point(4, 23);
             this.tabPageSerial.Name = "tabPageSerial";
             this.tabPageSerial.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSerial.Size = new System.Drawing.Size(677, 454);
+            this.tabPageSerial.Size = new System.Drawing.Size(791, 533);
             this.tabPageSerial.TabIndex = 0;
             this.tabPageSerial.Text = "SerialPort";
             // 
@@ -367,18 +369,18 @@
             this.groupBoxSerialRxAndTxCtrl.Controls.Add(this.btnSerialSend);
             this.groupBoxSerialRxAndTxCtrl.Controls.Add(this.rbtnSerialHex);
             this.groupBoxSerialRxAndTxCtrl.Controls.Add(this.rbtnSerialChar);
-            this.groupBoxSerialRxAndTxCtrl.Location = new System.Drawing.Point(470, 267);
+            this.groupBoxSerialRxAndTxCtrl.Location = new System.Drawing.Point(548, 311);
             this.groupBoxSerialRxAndTxCtrl.Name = "groupBoxSerialRxAndTxCtrl";
-            this.groupBoxSerialRxAndTxCtrl.Size = new System.Drawing.Size(203, 187);
+            this.groupBoxSerialRxAndTxCtrl.Size = new System.Drawing.Size(237, 218);
             this.groupBoxSerialRxAndTxCtrl.TabIndex = 4;
             this.groupBoxSerialRxAndTxCtrl.TabStop = false;
             this.groupBoxSerialRxAndTxCtrl.Text = "Rx/Tx Control";
             // 
             // btnSerialClearCnt
             // 
-            this.btnSerialClearCnt.Location = new System.Drawing.Point(111, 117);
+            this.btnSerialClearCnt.Location = new System.Drawing.Point(129, 136);
             this.btnSerialClearCnt.Name = "btnSerialClearCnt";
-            this.btnSerialClearCnt.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialClearCnt.Size = new System.Drawing.Size(87, 27);
             this.btnSerialClearCnt.TabIndex = 12;
             this.btnSerialClearCnt.Text = "Clear Cnt";
             this.btnSerialClearCnt.UseVisualStyleBackColor = true;
@@ -386,9 +388,9 @@
             // 
             // btnSerialClearTx
             // 
-            this.btnSerialClearTx.Location = new System.Drawing.Point(111, 146);
+            this.btnSerialClearTx.Location = new System.Drawing.Point(129, 170);
             this.btnSerialClearTx.Name = "btnSerialClearTx";
-            this.btnSerialClearTx.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialClearTx.Size = new System.Drawing.Size(87, 27);
             this.btnSerialClearTx.TabIndex = 11;
             this.btnSerialClearTx.Text = "Clear Tx";
             this.btnSerialClearTx.UseVisualStyleBackColor = true;
@@ -396,9 +398,9 @@
             // 
             // btnSerialClearRx
             // 
-            this.btnSerialClearRx.Location = new System.Drawing.Point(20, 146);
+            this.btnSerialClearRx.Location = new System.Drawing.Point(23, 170);
             this.btnSerialClearRx.Name = "btnSerialClearRx";
-            this.btnSerialClearRx.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialClearRx.Size = new System.Drawing.Size(87, 27);
             this.btnSerialClearRx.TabIndex = 10;
             this.btnSerialClearRx.Text = "Clear Rx";
             this.btnSerialClearRx.UseVisualStyleBackColor = true;
@@ -406,9 +408,9 @@
             // 
             // btnSerialPause
             // 
-            this.btnSerialPause.Location = new System.Drawing.Point(20, 117);
+            this.btnSerialPause.Location = new System.Drawing.Point(23, 136);
             this.btnSerialPause.Name = "btnSerialPause";
-            this.btnSerialPause.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialPause.Size = new System.Drawing.Size(87, 27);
             this.btnSerialPause.TabIndex = 9;
             this.btnSerialPause.Text = "Pause";
             this.btnSerialPause.UseVisualStyleBackColor = true;
@@ -416,9 +418,9 @@
             // 
             // btnSerialReceive
             // 
-            this.btnSerialReceive.Location = new System.Drawing.Point(111, 88);
+            this.btnSerialReceive.Location = new System.Drawing.Point(129, 103);
             this.btnSerialReceive.Name = "btnSerialReceive";
-            this.btnSerialReceive.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialReceive.Size = new System.Drawing.Size(87, 27);
             this.btnSerialReceive.TabIndex = 8;
             this.btnSerialReceive.Text = "Receive";
             this.btnSerialReceive.UseVisualStyleBackColor = true;
@@ -427,9 +429,9 @@
             // checkBoxSerialAutoSend
             // 
             this.checkBoxSerialAutoSend.AutoSize = true;
-            this.checkBoxSerialAutoSend.Location = new System.Drawing.Point(117, 19);
+            this.checkBoxSerialAutoSend.Location = new System.Drawing.Point(136, 22);
             this.checkBoxSerialAutoSend.Name = "checkBoxSerialAutoSend";
-            this.checkBoxSerialAutoSend.Size = new System.Drawing.Size(78, 16);
+            this.checkBoxSerialAutoSend.Size = new System.Drawing.Size(85, 18);
             this.checkBoxSerialAutoSend.TabIndex = 7;
             this.checkBoxSerialAutoSend.Text = "Auto Send";
             this.checkBoxSerialAutoSend.UseVisualStyleBackColor = true;
@@ -438,34 +440,34 @@
             // lblUnitMs
             // 
             this.lblUnitMs.AutoSize = true;
-            this.lblUnitMs.Location = new System.Drawing.Point(146, 48);
+            this.lblUnitMs.Location = new System.Drawing.Point(170, 56);
             this.lblUnitMs.Name = "lblUnitMs";
-            this.lblUnitMs.Size = new System.Drawing.Size(17, 12);
+            this.lblUnitMs.Size = new System.Drawing.Size(22, 14);
             this.lblUnitMs.TabIndex = 6;
             this.lblUnitMs.Text = "ms";
             // 
             // lbSerialSendPeriodTime
             // 
             this.lbSerialSendPeriodTime.AutoSize = true;
-            this.lbSerialSendPeriodTime.Location = new System.Drawing.Point(24, 48);
+            this.lbSerialSendPeriodTime.Location = new System.Drawing.Point(28, 56);
             this.lbSerialSendPeriodTime.Name = "lbSerialSendPeriodTime";
-            this.lbSerialSendPeriodTime.Size = new System.Drawing.Size(71, 12);
+            this.lbSerialSendPeriodTime.Size = new System.Drawing.Size(72, 14);
             this.lbSerialSendPeriodTime.TabIndex = 5;
             this.lbSerialSendPeriodTime.Text = "Period Time";
             // 
             // txbSerilaSendPeriodTime
             // 
-            this.txbSerilaSendPeriodTime.Location = new System.Drawing.Point(101, 45);
+            this.txbSerilaSendPeriodTime.Location = new System.Drawing.Point(118, 52);
             this.txbSerilaSendPeriodTime.Name = "txbSerilaSendPeriodTime";
-            this.txbSerilaSendPeriodTime.Size = new System.Drawing.Size(39, 21);
+            this.txbSerilaSendPeriodTime.Size = new System.Drawing.Size(45, 22);
             this.txbSerilaSendPeriodTime.TabIndex = 4;
             this.txbSerilaSendPeriodTime.Text = "1000";
             // 
             // btnSerialSend
             // 
-            this.btnSerialSend.Location = new System.Drawing.Point(20, 88);
+            this.btnSerialSend.Location = new System.Drawing.Point(23, 103);
             this.btnSerialSend.Name = "btnSerialSend";
-            this.btnSerialSend.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialSend.Size = new System.Drawing.Size(87, 27);
             this.btnSerialSend.TabIndex = 2;
             this.btnSerialSend.Text = "Send";
             this.btnSerialSend.UseVisualStyleBackColor = true;
@@ -474,9 +476,9 @@
             // rbtnSerialHex
             // 
             this.rbtnSerialHex.AutoSize = true;
-            this.rbtnSerialHex.Location = new System.Drawing.Point(70, 18);
+            this.rbtnSerialHex.Location = new System.Drawing.Point(82, 21);
             this.rbtnSerialHex.Name = "rbtnSerialHex";
-            this.rbtnSerialHex.Size = new System.Drawing.Size(41, 16);
+            this.rbtnSerialHex.Size = new System.Drawing.Size(46, 18);
             this.rbtnSerialHex.TabIndex = 1;
             this.rbtnSerialHex.Text = "Hex";
             this.rbtnSerialHex.UseVisualStyleBackColor = true;
@@ -486,9 +488,9 @@
             // 
             this.rbtnSerialChar.AutoSize = true;
             this.rbtnSerialChar.Checked = true;
-            this.rbtnSerialChar.Location = new System.Drawing.Point(8, 18);
+            this.rbtnSerialChar.Location = new System.Drawing.Point(9, 21);
             this.rbtnSerialChar.Name = "rbtnSerialChar";
-            this.rbtnSerialChar.Size = new System.Drawing.Size(47, 16);
+            this.rbtnSerialChar.Size = new System.Drawing.Size(49, 18);
             this.rbtnSerialChar.TabIndex = 0;
             this.rbtnSerialChar.TabStop = true;
             this.rbtnSerialChar.Text = "Char";
@@ -497,9 +499,9 @@
             // groupBoxSeriaSendData
             // 
             this.groupBoxSeriaSendData.Controls.Add(this.txbSerialSendData);
-            this.groupBoxSeriaSendData.Location = new System.Drawing.Point(8, 267);
+            this.groupBoxSeriaSendData.Location = new System.Drawing.Point(9, 311);
             this.groupBoxSeriaSendData.Name = "groupBoxSeriaSendData";
-            this.groupBoxSeriaSendData.Size = new System.Drawing.Size(457, 187);
+            this.groupBoxSeriaSendData.Size = new System.Drawing.Size(533, 218);
             this.groupBoxSeriaSendData.TabIndex = 1;
             this.groupBoxSeriaSendData.TabStop = false;
             this.groupBoxSeriaSendData.Text = "Sending Data";
@@ -509,18 +511,18 @@
             this.txbSerialSendData.AcceptsReturn = true;
             this.txbSerialSendData.AcceptsTab = true;
             this.txbSerialSendData.AllowDrop = true;
-            this.txbSerialSendData.Location = new System.Drawing.Point(5, 15);
+            this.txbSerialSendData.Location = new System.Drawing.Point(6, 17);
             this.txbSerialSendData.Multiline = true;
             this.txbSerialSendData.Name = "txbSerialSendData";
-            this.txbSerialSendData.Size = new System.Drawing.Size(447, 168);
+            this.txbSerialSendData.Size = new System.Drawing.Size(521, 195);
             this.txbSerialSendData.TabIndex = 0;
             // 
             // groupBoxSerialReceiveData
             // 
             this.groupBoxSerialReceiveData.Controls.Add(this.txbSerialReceiveData);
-            this.groupBoxSerialReceiveData.Location = new System.Drawing.Point(8, 6);
+            this.groupBoxSerialReceiveData.Location = new System.Drawing.Point(9, 7);
             this.groupBoxSerialReceiveData.Name = "groupBoxSerialReceiveData";
-            this.groupBoxSerialReceiveData.Size = new System.Drawing.Size(665, 256);
+            this.groupBoxSerialReceiveData.Size = new System.Drawing.Size(776, 299);
             this.groupBoxSerialReceiveData.TabIndex = 0;
             this.groupBoxSerialReceiveData.TabStop = false;
             this.groupBoxSerialReceiveData.Text = "Receiving Data";
@@ -528,12 +530,12 @@
             // txbSerialReceiveData
             // 
             this.txbSerialReceiveData.AllowDrop = true;
-            this.txbSerialReceiveData.Location = new System.Drawing.Point(6, 14);
+            this.txbSerialReceiveData.Location = new System.Drawing.Point(7, 16);
             this.txbSerialReceiveData.Multiline = true;
             this.txbSerialReceiveData.Name = "txbSerialReceiveData";
             this.txbSerialReceiveData.ReadOnly = true;
             this.txbSerialReceiveData.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txbSerialReceiveData.Size = new System.Drawing.Size(655, 238);
+            this.txbSerialReceiveData.Size = new System.Drawing.Size(763, 277);
             this.txbSerialReceiveData.TabIndex = 0;
             // 
             // tabPageImage
@@ -543,10 +545,10 @@
             this.tabPageImage.Controls.Add(this.groupBoxImageGray);
             this.tabPageImage.Controls.Add(this.groupBox1);
             this.tabPageImage.Controls.Add(this.groupBoxOriginalImage);
-            this.tabPageImage.Location = new System.Drawing.Point(4, 22);
+            this.tabPageImage.Location = new System.Drawing.Point(4, 23);
             this.tabPageImage.Name = "tabPageImage";
             this.tabPageImage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageImage.Size = new System.Drawing.Size(677, 454);
+            this.tabPageImage.Size = new System.Drawing.Size(791, 533);
             this.tabPageImage.TabIndex = 1;
             this.tabPageImage.Text = "Image";
             // 
@@ -564,18 +566,18 @@
             this.groupBoxImageCtrl.Controls.Add(this.txbImageProcData);
             this.groupBoxImageCtrl.Controls.Add(this.btnImageBegin);
             this.groupBoxImageCtrl.Controls.Add(this.btnImageAlgorithm);
-            this.groupBoxImageCtrl.Location = new System.Drawing.Point(304, 231);
+            this.groupBoxImageCtrl.Location = new System.Drawing.Point(355, 269);
             this.groupBoxImageCtrl.Name = "groupBoxImageCtrl";
-            this.groupBoxImageCtrl.Size = new System.Drawing.Size(368, 221);
+            this.groupBoxImageCtrl.Size = new System.Drawing.Size(429, 258);
             this.groupBoxImageCtrl.TabIndex = 4;
             this.groupBoxImageCtrl.TabStop = false;
             this.groupBoxImageCtrl.Text = "Image Control";
             // 
             // btnBinaryGray
             // 
-            this.btnBinaryGray.Location = new System.Drawing.Point(272, 133);
+            this.btnBinaryGray.Location = new System.Drawing.Point(317, 155);
             this.btnBinaryGray.Name = "btnBinaryGray";
-            this.btnBinaryGray.Size = new System.Drawing.Size(90, 23);
+            this.btnBinaryGray.Size = new System.Drawing.Size(105, 27);
             this.btnBinaryGray.TabIndex = 13;
             this.btnBinaryGray.Text = "Binary";
             this.btnBinaryGray.UseVisualStyleBackColor = true;
@@ -583,9 +585,9 @@
             // 
             // numericUpDownImageThreshold
             // 
-            this.numericUpDownImageThreshold.Location = new System.Drawing.Point(331, 195);
+            this.numericUpDownImageThreshold.Location = new System.Drawing.Point(386, 227);
             this.numericUpDownImageThreshold.Name = "numericUpDownImageThreshold";
-            this.numericUpDownImageThreshold.Size = new System.Drawing.Size(37, 21);
+            this.numericUpDownImageThreshold.Size = new System.Drawing.Size(43, 22);
             this.numericUpDownImageThreshold.TabIndex = 12;
             this.numericUpDownImageThreshold.Value = new decimal(new int[] {
             100,
@@ -597,26 +599,26 @@
             // lblImageColNumber
             // 
             this.lblImageColNumber.AutoSize = true;
-            this.lblImageColNumber.Location = new System.Drawing.Point(308, 179);
+            this.lblImageColNumber.Location = new System.Drawing.Point(359, 209);
             this.lblImageColNumber.Name = "lblImageColNumber";
-            this.lblImageColNumber.Size = new System.Drawing.Size(11, 12);
+            this.lblImageColNumber.Size = new System.Drawing.Size(14, 14);
             this.lblImageColNumber.TabIndex = 11;
             this.lblImageColNumber.Text = "0";
             // 
             // lblImageRowNumber
             // 
             this.lblImageRowNumber.AutoSize = true;
-            this.lblImageRowNumber.Location = new System.Drawing.Point(308, 159);
+            this.lblImageRowNumber.Location = new System.Drawing.Point(359, 185);
             this.lblImageRowNumber.Name = "lblImageRowNumber";
-            this.lblImageRowNumber.Size = new System.Drawing.Size(11, 12);
+            this.lblImageRowNumber.Size = new System.Drawing.Size(14, 14);
             this.lblImageRowNumber.TabIndex = 10;
             this.lblImageRowNumber.Text = "0";
             // 
             // btnImageFilp
             // 
-            this.btnImageFilp.Location = new System.Drawing.Point(273, 104);
+            this.btnImageFilp.Location = new System.Drawing.Point(318, 121);
             this.btnImageFilp.Name = "btnImageFilp";
-            this.btnImageFilp.Size = new System.Drawing.Size(90, 23);
+            this.btnImageFilp.Size = new System.Drawing.Size(105, 27);
             this.btnImageFilp.TabIndex = 9;
             this.btnImageFilp.Text = "Flip";
             this.btnImageFilp.UseVisualStyleBackColor = true;
@@ -625,35 +627,35 @@
             // lblImageThreshold
             // 
             this.lblImageThreshold.AutoSize = true;
-            this.lblImageThreshold.Location = new System.Drawing.Point(271, 197);
+            this.lblImageThreshold.Location = new System.Drawing.Point(316, 230);
             this.lblImageThreshold.Name = "lblImageThreshold";
-            this.lblImageThreshold.Size = new System.Drawing.Size(65, 12);
+            this.lblImageThreshold.Size = new System.Drawing.Size(65, 14);
             this.lblImageThreshold.TabIndex = 7;
             this.lblImageThreshold.Text = "Threshold:";
             // 
             // lblImageCol
             // 
             this.lblImageCol.AutoSize = true;
-            this.lblImageCol.Location = new System.Drawing.Point(273, 179);
+            this.lblImageCol.Location = new System.Drawing.Point(318, 209);
             this.lblImageCol.Name = "lblImageCol";
-            this.lblImageCol.Size = new System.Drawing.Size(29, 12);
+            this.lblImageCol.Size = new System.Drawing.Size(27, 14);
             this.lblImageCol.TabIndex = 5;
             this.lblImageCol.Text = "Col:";
             // 
             // lblImageRow
             // 
             this.lblImageRow.AutoSize = true;
-            this.lblImageRow.Location = new System.Drawing.Point(273, 159);
+            this.lblImageRow.Location = new System.Drawing.Point(318, 185);
             this.lblImageRow.Name = "lblImageRow";
-            this.lblImageRow.Size = new System.Drawing.Size(29, 12);
+            this.lblImageRow.Size = new System.Drawing.Size(35, 14);
             this.lblImageRow.TabIndex = 3;
             this.lblImageRow.Text = "Row:";
             // 
             // btnImageGray
             // 
-            this.btnImageGray.Location = new System.Drawing.Point(273, 75);
+            this.btnImageGray.Location = new System.Drawing.Point(318, 87);
             this.btnImageGray.Name = "btnImageGray";
-            this.btnImageGray.Size = new System.Drawing.Size(90, 23);
+            this.btnImageGray.Size = new System.Drawing.Size(105, 27);
             this.btnImageGray.TabIndex = 2;
             this.btnImageGray.Text = "Gray";
             this.btnImageGray.UseVisualStyleBackColor = true;
@@ -661,18 +663,18 @@
             // 
             // txbImageProcData
             // 
-            this.txbImageProcData.Location = new System.Drawing.Point(4, 15);
+            this.txbImageProcData.Location = new System.Drawing.Point(5, 17);
             this.txbImageProcData.Multiline = true;
             this.txbImageProcData.Name = "txbImageProcData";
             this.txbImageProcData.ReadOnly = true;
-            this.txbImageProcData.Size = new System.Drawing.Size(263, 202);
+            this.txbImageProcData.Size = new System.Drawing.Size(306, 235);
             this.txbImageProcData.TabIndex = 0;
             // 
             // btnImageBegin
             // 
-            this.btnImageBegin.Location = new System.Drawing.Point(273, 12);
+            this.btnImageBegin.Location = new System.Drawing.Point(318, 14);
             this.btnImageBegin.Name = "btnImageBegin";
-            this.btnImageBegin.Size = new System.Drawing.Size(90, 23);
+            this.btnImageBegin.Size = new System.Drawing.Size(105, 27);
             this.btnImageBegin.TabIndex = 0;
             this.btnImageBegin.Text = "Begin";
             this.btnImageBegin.UseVisualStyleBackColor = true;
@@ -680,9 +682,9 @@
             // 
             // btnImageAlgorithm
             // 
-            this.btnImageAlgorithm.Location = new System.Drawing.Point(273, 45);
+            this.btnImageAlgorithm.Location = new System.Drawing.Point(318, 52);
             this.btnImageAlgorithm.Name = "btnImageAlgorithm";
-            this.btnImageAlgorithm.Size = new System.Drawing.Size(90, 24);
+            this.btnImageAlgorithm.Size = new System.Drawing.Size(105, 28);
             this.btnImageAlgorithm.TabIndex = 1;
             this.btnImageAlgorithm.Text = "Algorithm";
             this.btnImageAlgorithm.UseVisualStyleBackColor = true;
@@ -691,36 +693,35 @@
             // groupBoxImageGray
             // 
             this.groupBoxImageGray.Controls.Add(this.chartImageGray);
-            this.groupBoxImageGray.Location = new System.Drawing.Point(304, 5);
+            this.groupBoxImageGray.Location = new System.Drawing.Point(355, 6);
             this.groupBoxImageGray.Name = "groupBoxImageGray";
-            this.groupBoxImageGray.Size = new System.Drawing.Size(368, 221);
+            this.groupBoxImageGray.Size = new System.Drawing.Size(429, 258);
             this.groupBoxImageGray.TabIndex = 2;
             this.groupBoxImageGray.TabStop = false;
             this.groupBoxImageGray.Text = "Gray";
             // 
             // chartImageGray
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartImageGray.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chartImageGray.Legends.Add(legend3);
-            this.chartImageGray.Location = new System.Drawing.Point(5, 15);
+            chartArea1.Name = "ChartArea1";
+            this.chartImageGray.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartImageGray.Legends.Add(legend1);
+            this.chartImageGray.Location = new System.Drawing.Point(6, 17);
             this.chartImageGray.Name = "chartImageGray";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Gray";
-            this.chartImageGray.Series.Add(series3);
-            this.chartImageGray.Size = new System.Drawing.Size(357, 201);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Gray";
+            this.chartImageGray.Series.Add(series1);
+            this.chartImageGray.Size = new System.Drawing.Size(416, 234);
             this.chartImageGray.TabIndex = 1;
             this.chartImageGray.Text = "chart1";
-            this.chartImageGray.Visible = false;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.binaryImagePictureBox);
-            this.groupBox1.Location = new System.Drawing.Point(4, 231);
+            this.groupBox1.Location = new System.Drawing.Point(5, 269);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(295, 221);
+            this.groupBox1.Size = new System.Drawing.Size(344, 258);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Binary Image";
@@ -729,9 +730,9 @@
             // 
             this.binaryImagePictureBox.BackColor = System.Drawing.Color.DarkGray;
             this.binaryImagePictureBox.ContextMenuStrip = this.contextMenuStrip;
-            this.binaryImagePictureBox.Location = new System.Drawing.Point(5, 15);
+            this.binaryImagePictureBox.Location = new System.Drawing.Point(6, 17);
             this.binaryImagePictureBox.Name = "binaryImagePictureBox";
-            this.binaryImagePictureBox.Size = new System.Drawing.Size(284, 201);
+            this.binaryImagePictureBox.Size = new System.Drawing.Size(331, 234);
             this.binaryImagePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.binaryImagePictureBox.TabIndex = 0;
             this.binaryImagePictureBox.TabStop = false;
@@ -740,9 +741,9 @@
             // groupBoxOriginalImage
             // 
             this.groupBoxOriginalImage.Controls.Add(this.originalImagePictureBox);
-            this.groupBoxOriginalImage.Location = new System.Drawing.Point(4, 5);
+            this.groupBoxOriginalImage.Location = new System.Drawing.Point(5, 6);
             this.groupBoxOriginalImage.Name = "groupBoxOriginalImage";
-            this.groupBoxOriginalImage.Size = new System.Drawing.Size(295, 221);
+            this.groupBoxOriginalImage.Size = new System.Drawing.Size(344, 258);
             this.groupBoxOriginalImage.TabIndex = 0;
             this.groupBoxOriginalImage.TabStop = false;
             this.groupBoxOriginalImage.Text = "Original Image";
@@ -755,9 +756,9 @@
             this.originalImagePictureBox.BackColor = System.Drawing.Color.DarkGray;
             this.originalImagePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.originalImagePictureBox.ContextMenuStrip = this.contextMenuStrip;
-            this.originalImagePictureBox.Location = new System.Drawing.Point(6, 15);
+            this.originalImagePictureBox.Location = new System.Drawing.Point(7, 17);
             this.originalImagePictureBox.Name = "originalImagePictureBox";
-            this.originalImagePictureBox.Size = new System.Drawing.Size(284, 202);
+            this.originalImagePictureBox.Size = new System.Drawing.Size(331, 235);
             this.originalImagePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.originalImagePictureBox.TabIndex = 0;
             this.originalImagePictureBox.TabStop = false;
@@ -765,18 +766,18 @@
             // 
             // tabPageScope
             // 
-            this.tabPageScope.Location = new System.Drawing.Point(4, 22);
+            this.tabPageScope.Location = new System.Drawing.Point(4, 23);
             this.tabPageScope.Name = "tabPageScope";
-            this.tabPageScope.Size = new System.Drawing.Size(677, 454);
+            this.tabPageScope.Size = new System.Drawing.Size(791, 533);
             this.tabPageScope.TabIndex = 2;
             this.tabPageScope.Text = "Scope";
             this.tabPageScope.UseVisualStyleBackColor = true;
             // 
             // tabPageNetWorker
             // 
-            this.tabPageNetWorker.Location = new System.Drawing.Point(4, 22);
+            this.tabPageNetWorker.Location = new System.Drawing.Point(4, 23);
             this.tabPageNetWorker.Name = "tabPageNetWorker";
-            this.tabPageNetWorker.Size = new System.Drawing.Size(677, 454);
+            this.tabPageNetWorker.Size = new System.Drawing.Size(791, 533);
             this.tabPageNetWorker.TabIndex = 3;
             this.tabPageNetWorker.Text = "NetWorker";
             this.tabPageNetWorker.UseVisualStyleBackColor = true;
@@ -788,9 +789,9 @@
             this.groupBoxCOMCtrl.Controls.Add(this.btnSerialportCtrl);
             this.groupBoxCOMCtrl.Controls.Add(this.cmbCOMPort);
             this.groupBoxCOMCtrl.Controls.Add(this.lblCOMPort);
-            this.groupBoxCOMCtrl.Location = new System.Drawing.Point(698, 28);
+            this.groupBoxCOMCtrl.Location = new System.Drawing.Point(814, 33);
             this.groupBoxCOMCtrl.Name = "groupBoxCOMCtrl";
-            this.groupBoxCOMCtrl.Size = new System.Drawing.Size(153, 130);
+            this.groupBoxCOMCtrl.Size = new System.Drawing.Size(178, 152);
             this.groupBoxCOMCtrl.TabIndex = 4;
             this.groupBoxCOMCtrl.TabStop = false;
             this.groupBoxCOMCtrl.Text = "Serialport Control";
@@ -798,17 +799,17 @@
             // lblCOMStatus
             // 
             this.lblCOMStatus.AutoSize = true;
-            this.lblCOMStatus.Location = new System.Drawing.Point(6, 108);
+            this.lblCOMStatus.Location = new System.Drawing.Point(7, 126);
             this.lblCOMStatus.Name = "lblCOMStatus";
-            this.lblCOMStatus.Size = new System.Drawing.Size(131, 12);
+            this.lblCOMStatus.Size = new System.Drawing.Size(108, 14);
             this.lblCOMStatus.TabIndex = 4;
             this.lblCOMStatus.Text = "Serial port is close.";
             // 
             // btnSerialportSearch
             // 
-            this.btnSerialportSearch.Location = new System.Drawing.Point(30, 82);
+            this.btnSerialportSearch.Location = new System.Drawing.Point(35, 96);
             this.btnSerialportSearch.Name = "btnSerialportSearch";
-            this.btnSerialportSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialportSearch.Size = new System.Drawing.Size(87, 27);
             this.btnSerialportSearch.TabIndex = 3;
             this.btnSerialportSearch.Text = "Search";
             this.btnSerialportSearch.UseVisualStyleBackColor = true;
@@ -816,9 +817,9 @@
             // 
             // btnSerialportCtrl
             // 
-            this.btnSerialportCtrl.Location = new System.Drawing.Point(30, 54);
+            this.btnSerialportCtrl.Location = new System.Drawing.Point(35, 63);
             this.btnSerialportCtrl.Name = "btnSerialportCtrl";
-            this.btnSerialportCtrl.Size = new System.Drawing.Size(75, 23);
+            this.btnSerialportCtrl.Size = new System.Drawing.Size(87, 27);
             this.btnSerialportCtrl.TabIndex = 2;
             this.btnSerialportCtrl.Text = "Open";
             this.btnSerialportCtrl.UseVisualStyleBackColor = true;
@@ -829,17 +830,17 @@
             this.cmbCOMPort.BackColor = System.Drawing.SystemColors.Window;
             this.cmbCOMPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCOMPort.FormattingEnabled = true;
-            this.cmbCOMPort.Location = new System.Drawing.Point(20, 30);
+            this.cmbCOMPort.Location = new System.Drawing.Point(23, 35);
             this.cmbCOMPort.Name = "cmbCOMPort";
-            this.cmbCOMPort.Size = new System.Drawing.Size(108, 20);
+            this.cmbCOMPort.Size = new System.Drawing.Size(125, 22);
             this.cmbCOMPort.TabIndex = 1;
             // 
             // lblCOMPort
             // 
             this.lblCOMPort.AutoSize = true;
-            this.lblCOMPort.Location = new System.Drawing.Point(17, 15);
+            this.lblCOMPort.Location = new System.Drawing.Point(20, 17);
             this.lblCOMPort.Name = "lblCOMPort";
-            this.lblCOMPort.Size = new System.Drawing.Size(53, 12);
+            this.lblCOMPort.Size = new System.Drawing.Size(59, 14);
             this.lblCOMPort.TabIndex = 0;
             this.lblCOMPort.Text = "COM Port";
             // 
@@ -852,9 +853,9 @@
             this.groupBoxFileCtrl.Controls.Add(this.btnFileDelete);
             this.groupBoxFileCtrl.Controls.Add(this.btnFileSave);
             this.groupBoxFileCtrl.Controls.Add(this.btnFileOpen);
-            this.groupBoxFileCtrl.Location = new System.Drawing.Point(698, 164);
+            this.groupBoxFileCtrl.Location = new System.Drawing.Point(814, 191);
             this.groupBoxFileCtrl.Name = "groupBoxFileCtrl";
-            this.groupBoxFileCtrl.Size = new System.Drawing.Size(153, 345);
+            this.groupBoxFileCtrl.Size = new System.Drawing.Size(178, 402);
             this.groupBoxFileCtrl.TabIndex = 5;
             this.groupBoxFileCtrl.TabStop = false;
             this.groupBoxFileCtrl.Text = "File Control";
@@ -862,18 +863,18 @@
             // listBoxFiles
             // 
             this.listBoxFiles.FormattingEnabled = true;
-            this.listBoxFiles.ItemHeight = 12;
-            this.listBoxFiles.Location = new System.Drawing.Point(5, 194);
+            this.listBoxFiles.ItemHeight = 14;
+            this.listBoxFiles.Location = new System.Drawing.Point(6, 226);
             this.listBoxFiles.Name = "listBoxFiles";
-            this.listBoxFiles.Size = new System.Drawing.Size(142, 148);
+            this.listBoxFiles.Size = new System.Drawing.Size(165, 172);
             this.listBoxFiles.TabIndex = 6;
             this.listBoxFiles.DoubleClick += new System.EventHandler(this.listBoxFiles_DoubleClick);
             // 
             // btnFileEmpty
             // 
-            this.btnFileEmpty.Location = new System.Drawing.Point(30, 166);
+            this.btnFileEmpty.Location = new System.Drawing.Point(35, 194);
             this.btnFileEmpty.Name = "btnFileEmpty";
-            this.btnFileEmpty.Size = new System.Drawing.Size(90, 23);
+            this.btnFileEmpty.Size = new System.Drawing.Size(105, 27);
             this.btnFileEmpty.TabIndex = 5;
             this.btnFileEmpty.Text = "Empty";
             this.btnFileEmpty.UseVisualStyleBackColor = true;
@@ -881,9 +882,9 @@
             // 
             // btnFilePrevious
             // 
-            this.btnFilePrevious.Location = new System.Drawing.Point(30, 137);
+            this.btnFilePrevious.Location = new System.Drawing.Point(35, 160);
             this.btnFilePrevious.Name = "btnFilePrevious";
-            this.btnFilePrevious.Size = new System.Drawing.Size(90, 23);
+            this.btnFilePrevious.Size = new System.Drawing.Size(105, 27);
             this.btnFilePrevious.TabIndex = 4;
             this.btnFilePrevious.Text = "Previous";
             this.btnFilePrevious.UseVisualStyleBackColor = true;
@@ -891,9 +892,9 @@
             // 
             // btnFileNext
             // 
-            this.btnFileNext.Location = new System.Drawing.Point(30, 108);
+            this.btnFileNext.Location = new System.Drawing.Point(35, 126);
             this.btnFileNext.Name = "btnFileNext";
-            this.btnFileNext.Size = new System.Drawing.Size(90, 23);
+            this.btnFileNext.Size = new System.Drawing.Size(105, 27);
             this.btnFileNext.TabIndex = 3;
             this.btnFileNext.Text = "Next";
             this.btnFileNext.UseVisualStyleBackColor = true;
@@ -901,9 +902,9 @@
             // 
             // btnFileDelete
             // 
-            this.btnFileDelete.Location = new System.Drawing.Point(30, 79);
+            this.btnFileDelete.Location = new System.Drawing.Point(35, 92);
             this.btnFileDelete.Name = "btnFileDelete";
-            this.btnFileDelete.Size = new System.Drawing.Size(90, 23);
+            this.btnFileDelete.Size = new System.Drawing.Size(105, 27);
             this.btnFileDelete.TabIndex = 2;
             this.btnFileDelete.Text = "Close";
             this.btnFileDelete.UseVisualStyleBackColor = true;
@@ -911,9 +912,9 @@
             // 
             // btnFileSave
             // 
-            this.btnFileSave.Location = new System.Drawing.Point(30, 50);
+            this.btnFileSave.Location = new System.Drawing.Point(35, 58);
             this.btnFileSave.Name = "btnFileSave";
-            this.btnFileSave.Size = new System.Drawing.Size(90, 23);
+            this.btnFileSave.Size = new System.Drawing.Size(105, 27);
             this.btnFileSave.TabIndex = 1;
             this.btnFileSave.Text = "Save";
             this.btnFileSave.UseVisualStyleBackColor = true;
@@ -921,9 +922,9 @@
             // 
             // btnFileOpen
             // 
-            this.btnFileOpen.Location = new System.Drawing.Point(30, 20);
+            this.btnFileOpen.Location = new System.Drawing.Point(35, 23);
             this.btnFileOpen.Name = "btnFileOpen";
-            this.btnFileOpen.Size = new System.Drawing.Size(90, 23);
+            this.btnFileOpen.Size = new System.Drawing.Size(105, 27);
             this.btnFileOpen.TabIndex = 0;
             this.btnFileOpen.Text = "Open";
             this.btnFileOpen.UseVisualStyleBackColor = true;
@@ -935,9 +936,9 @@
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(855, 532);
+            this.ClientSize = new System.Drawing.Size(997, 621);
             this.Controls.Add(this.groupBoxFileCtrl);
             this.Controls.Add(this.groupBoxCOMCtrl);
             this.Controls.Add(this.tabControl);
